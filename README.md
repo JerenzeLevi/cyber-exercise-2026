@@ -57,6 +57,20 @@ Each phase folder contains individually numbered challenge sub-folders (e.g. `OF
 
 ---
 
+## 🎖️ Team — BYEBUST (9RCDG)
+
+**RESCOM-Wide Cyber Exercise 2026 — 🏆 1st Place / Champion**
+
+| Rank | Name | Role |
+|------|------|------|
+| 2LT | Charlie M. Galanay QMN PA (RES) | Team Officer |
+| — | Keshley Nitz Martinez PA (RES) | Team Leader |
+| PVT | Jefferson Balde PA (RES) | Member |
+| PVT | Jerenze Levi Omandam PA (RES) | Member |
+| PVT | Rendonn Clyde Pidor PA (RES) | Member |
+
+---
+
 ## 🌐 Related Public Reference Material
 
 Supplementary open-source posts referenced during the OSINT portion of this exercise:
