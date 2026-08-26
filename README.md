@@ -88,39 +88,71 @@ Each phase folder contains individually numbered challenge sub-folders (e.g. `OF
 
 Official pubmats announcing Team BYEBUST's national-level championship at RESCOM-Wide Cyber Exercise 2026, as republished by campus organizations and press.
 
-> **Note:** GitHub strips `<iframe>` embeds from rendered READMEs for security reasons — the embeds below will only render live on platforms that allow raw HTML (e.g. a personal site or GitHub Pages). The 🔗 link under each card always works on GitHub itself.
-
 <div align="center">
 
-<h4>🐦 SyBorg Club (SCC)</h4>
+<table>
+<tr>
+<td align="center" width="50%">
 
-<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FSyBorgSCC%2Fposts%2Fpfbid02JSTHkqdjKswtLHbYE9zxWASGwMZ4bDaTDH2MdTzUY6WBq5xYEusoN56myjszuEkSl&show_text=true&width=500" width="500" height="699" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+**🐦 SyBorg Club (SCC)**
 
-🔗 [View post on Facebook](https://www.facebook.com/SyBorgSCC/posts/pfbid02JSTHkqdjKswtLHbYE9zxWASGwMZ4bDaTDH2MdTzUY6WBq5xYEusoN56myjszuEkSl)
+<a href="https://www.facebook.com/SyBorgSCC/posts/pfbid02JSTHkqdjKswtLHbYE9zxWASGwMZ4bDaTDH2MdTzUY6WBq5xYEusoN56myjszuEkSl">
+<img src="./pubmat/syborg.jpg" width="380" alt="SyBorg Club pubmat"/>
+</a>
 
-<br>
+🔗 [View original post](https://www.facebook.com/SyBorgSCC/posts/pfbid02JSTHkqdjKswtLHbYE9zxWASGwMZ4bDaTDH2MdTzUY6WBq5xYEusoN56myjszuEkSl)
 
-<h4>🎓 CCS Grand Student Council (Saint Columban College)</h4>
+</td>
+<td align="center" width="50%">
 
-<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid02xaPu5g32XF47b5XaRf5vP37AirYsRuTTEhQM7faEQpKKs4xauSqQvLauyChR5EbWl%26id%3D61562252220588&show_text=true&width=500" width="500" height="773" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+**🎓 CCS Grand Student Council (SCC)**
 
-🔗 [View post on Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02xaPu5g32XF47b5XaRf5vP37AirYsRuTTEhQM7faEQpKKs4xauSqQvLauyChR5EbWl&id=61562252220588)
+<a href="https://www.facebook.com/permalink.php?story_fbid=pfbid02xaPu5g32XF47b5XaRf5vP37AirYsRuTTEhQM7faEQpKKs4xauSqQvLauyChR5EbWl&id=61562252220588">
+<img src="./pubmat/ccs-department.jpg" width="380" alt="CCS Grand Student Council pubmat"/>
+</a>
 
-<br>
+🔗 [View original post](https://www.facebook.com/permalink.php?story_fbid=pfbid02xaPu5g32XF47b5XaRf5vP37AirYsRuTTEhQM7faEQpKKs4xauSqQvLauyChR5EbWl&id=61562252220588)
 
-<h4>💻 SCC PSITS</h4>
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
 
-<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid02bwnCFomLY3hyUthRQ7DmUdT7avHrSXP8oeznBckYBnjSMwLk5NNhkriLDkdMEq1Gl%26id%3D100094561405868&show_text=true&width=500" width="500" height="486" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+**💻 SCC PSITS**
 
-🔗 [View post on Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02bwnCFomLY3hyUthRQ7DmUdT7avHrSXP8oeznBckYBnjSMwLk5NNhkriLDkdMEq1Gl&id=100094561405868)
+<a href="https://www.facebook.com/permalink.php?story_fbid=pfbid02bwnCFomLY3hyUthRQ7DmUdT7avHrSXP8oeznBckYBnjSMwLk5NNhkriLDkdMEq1Gl&id=100094561405868">
+<img src="./pubmat/psits-cover.jpg" width="380" alt="SCC PSITS pubmat"/>
+</a>
 
-<br>
+🔗 [View original post](https://www.facebook.com/permalink.php?story_fbid=pfbid02bwnCFomLY3hyUthRQ7DmUdT7avHrSXP8oeznBckYBnjSMwLk5NNhkriLDkdMEq1Gl&id=100094561405868)
 
-<h4>📰 The HARP Publication</h4>
+</td>
+<td align="center" width="50%">
 
-<iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FTheHARPPublication%2Fposts%2Fpfbid02Vq4qDFJei6yrc41BHjEYWSWRPh3T7Li6dPa9JqcW5TvHKfj9SEtQyEXRoHLnndDul&show_text=true&width=500" width="500" height="738" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+**📰 The HARP Publication**
 
-🔗 [View post on Facebook](https://www.facebook.com/TheHARPPublication/posts/pfbid02Vq4qDFJei6yrc41BHjEYWSWRPh3T7Li6dPa9JqcW5TvHKfj9SEtQyEXRoHLnndDul)
+<a href="https://www.facebook.com/TheHARPPublication/posts/pfbid02Vq4qDFJei6yrc41BHjEYWSWRPh3T7Li6dPa9JqcW5TvHKfj9SEtQyEXRoHLnndDul">
+<img src="./pubmat/harp.jpg" width="380" alt="The HARP Publication pubmat"/>
+</a>
+
+🔗 [View original post](https://www.facebook.com/TheHARPPublication/posts/pfbid02Vq4qDFJei6yrc41BHjEYWSWRPh3T7Li6dPa9JqcW5TvHKfj9SEtQyEXRoHLnndDul)
+
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2">
+
+**⚡ BYTE Organization**
+
+<a href="https://www.facebook.com/byteorganization/posts/pfbid035aSUeu4PicCwveR292hZrxJhayVjLRUuT4xphYajgMquB3DdfqrXhvKAgSqPF2Mxl">
+<img src="./pubmat/BYTE.jpg" width="380" alt="BYTE Organization pubmat"/>
+</a>
+
+🔗 [View original post](https://www.facebook.com/byteorganization/posts/pfbid035aSUeu4PicCwveR292hZrxJhayVjLRUuT4xphYajgMquB3DdfqrXhvKAgSqPF2Mxl)
+
+</td>
+</tr>
+</table>
 
 </div>
 
