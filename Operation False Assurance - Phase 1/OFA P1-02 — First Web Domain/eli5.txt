@@ -1,0 +1,15 @@
+What we were looking for:
+- The first website name the sick computer visited.
+- The address that website name pointed to.
+
+What we found:
+- The first website was www.sepco.com.
+- It pointed to the address 148.72.11.102.
+
+How we found it:
+- We took the sick computer we already found (160.9.3.101) and listed everything it did, oldest first.
+- The very first thing it did was ask the phone book for a website name.
+- We opened that record to see the full answer: the name and the address it got back.
+
+Answer:
+CTK{www.sepco.com|148.72.11.102}
