@@ -1,0 +1,16 @@
+What we were looking for:
+- Which computer (its address, called an IP address) got infected first.
+- Which "phone book" computer (DNS resolver, it turns website names into addresses) it used.
+
+What we found:
+- The sick computer was 160.9.3.101.
+- It used 160.9.3.1 as its phone book helper.
+
+How we found it:
+- We looked in the security camera logs (Security Onion) for computers asking the phone book for addresses.
+- There were lots of old, unrelated recordings mixed in, so we found the one dated October 2025, which matches our story.
+- We checked which computer's very first recorded action was asking the phone book a question.
+- That computer almost always used the same phone book helper, so we knew they were a pair.
+
+Answer:
+CTK{160.9.3.101|160.9.3.1}
