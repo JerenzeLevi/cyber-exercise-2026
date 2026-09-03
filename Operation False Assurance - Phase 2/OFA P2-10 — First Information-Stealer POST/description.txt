@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 2: Remote Access and Information-Stealer Traffic
+
+At what UTC time was the first information-stealer POST observed?
+
+Submit exactly in this format: CTK{YYYY-MM-DD HH:MM:SS UTC} Use exact capitalization.
+
+View Hint
+Sort matching HTTP events by @timestamp ascending.

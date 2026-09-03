@@ -1,0 +1,22 @@
+📢 IMPORTANT ANNOUNCEMENT — NO EVIDENCE, NO POINTS
+As advised by our Team Leader, the “NO EVIDENCE, NO POINTS” policy will be strictly enforced.
+
+All findings and answers included in the investigation report must be supported by clear and verifiable screenshots taken from the actual investigation environment.
+
+The screenshot requirement will serve as one of our primary measures to counter unsupported AI-generated answers. Teams may use AI as a research or investigation aid, but simply submitting an AI-generated answer or explanation will not be accepted.
+
+For all Report-Required categories:
+
+No screenshot evidence = No points
+Screenshots must come from the actual tools or platforms used during the investigation, such as Security Onion, Elastic/Kibana, Wireshark, terminal output, logs, or other relevant forensic tools.
+Screenshots must clearly show the evidence supporting the team's answer or conclusion.
+Screenshots that only show the final answer, AI-generated response, or manually typed information will not be considered valid evidence.
+Evidence must demonstrate that the team actually performed the investigation and validated the finding.
+A report with missing, insufficient, or unverifiable screenshot evidence will NOT receive a PASS evaluation.
+The corresponding flag will NOT be released until the report satisfies the evidence requirements and receives a PASS evaluation.
+
+Teams are strongly advised to take screenshots while conducting the investigation and ensure that important queries, logs, timestamps, indicators, packet details, and other relevant information are visible.
+
+AI CAN HELP YOU FIND THE ANSWER — YOUR SCREENSHOTS MUST PROVE IT.
+
+NO EVIDENCE. NO POINTS. NO PASS. NO FLAG.

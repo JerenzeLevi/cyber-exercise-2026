@@ -1,0 +1,405 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE
+Team Name
+BYEBUST
+Phase Number / Title
+Phase 4: Interactive Control and Long-Lived External Sessions (P4-03)
+Incident Date
+2025-10-08
+Date Submitted
+2026-08-22
+No.
+Category
+Percentage
+Points
+1
+Executive Summary
+10%
+100
+2
+Incident Timeline & Attack Reconstruction
+15%
+150
+3
+Victim & Infrastructure Identification
+10%
+100
+4
+Technical Investigation, Evidence & Attack Analysis
+55%
+550
+5
+Containment, Eradication & Recovery Recommendations
+5%
+50
+6
+Report Quality & Professional Presentation
+5%
+50
+TOTAL
+100%
+1,000
+1. EXECUTIVE SUMMARY
+During Phase 4 of Operation False Assurance (Interactive Control and Long-Lived External Sessions), network telemetry was
+analyzed to determine the enterprise Active Directory Domain Controller targeted by compromised workstation 10.11.28.101 .
+Investigation across Zeek NTLM authentication streams ( zeek.ntlm ) and DNS SRV resource records ( zeek.dns ) within PCAP
+import 9159a1b68fa050d28393c1863352b9d1 identified internal IP address 10.11.28.2 operating as the primary Domain
+Controller under the NetBIOS computer hostname WIN-FGG5B8C1BYF (FQDN: WIN-FGG5B8C1BYF.mytallbeer.com ). The server
+handles all core domain infrastructure services including DNS (port 53), Kerberos (port 88), NTLM/NetBIOS (port 139), LDAP
+(port 389), and SMB (port 445) for the mytallbeer.com forest.
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION
+Date / Time
+(UTC)
+Source
+Destination
+Protocol /
+Port
+Activity / Observation
+2025-10-08
+09:00:05
+10.11.28.101
+10.11.28.2
+TCP / 139,
+445
+NTLM authentication handshake exposing server NetBIOS name WIN-
+FGG5B8C1BYF and tree mytallbeer.com .
+2025-10-08
+09:09:18
+10.11.28.101
+10.11.28.2
+UDP / 53
+DNS resolution queries directed to internal gateway/DNS server 
+10.11.28.2 .
+2025-10-08
+10:21:44
+10.11.28.101
+10.11.28.2
+TCP / 445
+SMB2 tree connect and share mapping against WIN-FGG5B8C1BYF .
+2025-10-08
+10:24:30
+10.11.28.101
+10.11.28.2
+UDP / 53
+DNS SRV query _ldap._tcp.pdc._msdcs.mytallbeer.com resolving
+to win-fgg5b8c1byf.mytallbeer.com .
+Attack Reconstruction
+Following established interactive C2 control over internal workstation 10.11.28.101 ( DESKTOP-CLIENT1 ), the adversary
+engaged in internal reconnaissance to map domain assets. The compromised host initiated NTLM authentication challenges
+against 10.11.28.2 over ports 139 and 445, receiving challenge-response metadata containing the server NetBIOS name WIN-
+FGG5B8C1BYF and forest root mytallbeer.com . Subsequently, the client performed automated Active Directory Domain
+Controller discovery via DNS SRV queries ( _ldap._tcp.pdc._msdcs.mytallbeer.com ), which authoritatively returned win-
+fgg5b8c1byf.mytallbeer.com hosted at 10.11.28.2 .
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION
+Targeted Domain Infrastructure
+FQDN
+AD Domain
+System Role
+Status
+--- page 2 ---
+IP
+Address
+Hostname
+(NetBIOS)
+Operating
+System
+10.11.28.2
+WIN-
+FGG5B8C1BYF
+WIN-
+FGG5B8C1BYF.mytallbeer.com
+Windows
+Server
+mytallbeer.com
+Primary
+Domain
+Controller
+(PDC)
+Targeted /
+Probed
+Relevant Infrastructure
+Type
+Domain / IP Address
+Port
+Purpose / Observation
+Domain Controller
+(DC)
+10.11.28.2 / WIN-
+FGG5B8C1BYF
+53, 88, 139,
+389, 445
+Authoritative Active Directory DC, DNS server, Kerberos
+KDC, and SMB server.
+Compromised
+Workstation
+10.11.28.101 / DESKTOP-
+CLIENT1
+Dynamic
+Internal victim host initiating domain reconnaissance and
+authentication requests.
+External Interactive
+C2
+86.159.48.25
+2222
+Attacker C2 node driving interactive terminal sessions on
+the workstation.
+External Encrypted
+C2
+jesofidiwi.com /
+108.177.235.29
+443
+Secondary external command-and-control beaconing
+endpoint.
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS
+4.1 Analyst Findings
+No.
+Finding / Objective
+Answer / Result
+Evidence Ref.
+1
+Domain Controller IP and Hostname (P4-03)
+CTK{10.11.28.2|WIN-FGG5B8C1BYF}
+E-01, E-02
+2
+Domain Controller IPv4 Address
+10.11.28.2
+E-01, E-03
+3
+Domain Controller NetBIOS Hostname
+WIN-FGG5B8C1BYF
+E-01
+4
+Domain Controller Fully Qualified Domain Name (FQDN)
+WIN-FGG5B8C1BYF.mytallbeer.com
+E-01, E-03
+5
+Active Directory Domain Name
+mytallbeer.com
+E-01, E-03
+4.2 Malware / Tool Identification
+Malware / Tool / Technique
+Evidence
+Confidence
+Active Directory Domain Discovery
+DNS SRV queries for _ldap._tcp.pdc._msdcs.mytallbeer.com
+High
+NTLM Authentication Reconnaissance
+Zeek NTLM log showing server NetBIOS/DNS extraction
+High
+SMB Share Enumeration
+Zeek SMB mapping logs connecting to 10.11.28.2:445
+High
+Technical analysis: The adversary leveraged standard Windows Active Directory discovery mechanisms and NTLM negotiation
+protocol fields to remotely enumerate the domain architecture and locate the primary Domain Controller from the compromised
+client workstation.
+4.3 Network Activity
+Time
+(UTC)
+Source IP
+Destination
+IP
+Port
+Protocol
+Target / Query
+Observation
+09:00:05
+10.11.28.101
+10.11.28.2
+139/445
+TCP/
+NTLM
+WIN-FGG5B8C1BYF
+NTLM challenge-response
+negotiation.
+09:09:18
+10.11.28.101
+10.11.28.2
+53
+UDP/DNS
+xfinity.com
+Standard DNS query forwarding.
+10:21:44
+10.11.28.101
+10.11.28.2
+445
+TCP/SMB
+IPC$ / Shares
+SMB2 tree connect and service
+probing.
+10:24:30
+10.11.28.101
+10.11.28.2
+53
+UDP/DNS
+_ldap._tcp.pdc._msdcs
+SRV lookup returning DC FQDN.
+--- page 3 ---
+4.4 Command-and-Control Activity
+C2 Domain / IP
+Port
+Protocol
+First Seen
+Observation
+86.159.48.25
+2222
+TCP
+2025-10-08
+09:27:17
+Interactive backdoor sessions issuing internal network
+enumeration commands.
+jesofidiwi.com /
+108.177.235.29
+443
+TLS
+2025-10-08
+08:00:00
+Encrypted C2 channel maintaining persistent host access.
+4.5 Files and Payloads
+Filename
+Source / URL
+Type
+Observation
+Not
+Determined
+Remote Shell /
+Memory
+Reconnaissance
+Commands
+Internal AD query commands (e.g., nltest , net group , or
+PowerShell AD cmdlets).
+4.6 Credential Collection / Exfiltration
+Collection Method
+NTLM Challenge-Response Negotiation & Directory Probing
+Information Collected
+Domain controller identity, domain tree metadata, user token hashes
+Exfiltration Method
+Interactive C2 channel over port 2222
+Destination
+86.159.48.25:2222
+Protocol / Port
+TCP / 2222
+Assessment: Internal authentication metadata and directory reconnaissance results were routed back to the external interactive
+C2 server.
+4.7 Lateral Movement
+Observed Flow
+10.11.28.101 → 10.11.28.2 (Ports 139, 445, 389, 88, 53)
+Status
+Reconnaissance / Service Mapping Phase. Direct domain compromise not observed in this
+pcap.
+4.8 Ransomware Activity
+Not Determined. No mass encryption or shadow copy deletion activity was detected during this phase.
+4.9 Indicators of Compromise
+Indicator
+Type
+Purpose / Assessment
+Recommended Action
+10.11.28.2
+IPv4 (Internal)
+Domain Controller IP
+Audit security logs; restrict administrative access
+WIN-FGG5B8C1BYF
+Hostname (NetBIOS)
+Domain Controller Computer Name
+Enforce MFA and Kerberos armoring
+mytallbeer.com
+Domain Name
+Active Directory Forest Domain
+Monitor domain-wide authentication anomalies
+10.11.28.101
+IPv4 (Internal)
+Compromised Workstation
+Isolate host immediately from network
+86.159.48.25
+IPv4 (External)
+Interactive C2 Server
+Block all traffic at perimeter firewall
+4.10 Investigation Evidence
+Query / Filter Used: import.id:"9159a1b68fa050d28393c1863352b9d1" AND event.dataset:zeek.ntlm
+Finding: NTLM handshake log captured at 09:00:05.073Z contained ntlm.server.nb.name: "WIN-FGG5B8C1BYF" , 
+ntlm.server.dns.name: "WIN-FGG5B8C1BYF.mytallbeer.com" , and destination.ip: "10.11.28.2" .
+Zeek Logs / Detections Used: zeek.ntlm , zeek.dns (SRV records), zeek.kerberos , zeek.ldap , zeek.smb_mapping .
+4.11 Evidence Register
+Evidence
+No.
+Description
+Source
+--- page 4 ---
+E-01
+Security Onion Hunt NTLM event details showing server NetBIOS name WIN-
+FGG5B8C1BYF and destination IP 10.11.28.2 .
+Security Onion Hunt
+( found_ui_ntlm_raw_2.png )
+E-02
+CyberEx challenge portal confirmation validating flag CTK{10.11.28.2|WIN-
+FGG5B8C1BYF} conquered (997 pts).
+CyberEx CTFd ( conquered
+image_3.jpg )
+E-03
+Security Onion Hunt DNS SRV query evidence mapping 
+_ldap._tcp.pdc._msdcs.mytallbeer.com to 10.11.28.2 .
+Security Onion Hunt
+( raw_hunt_ntlm_2.png )
+4.12 MITRE ATT&CK Mapping
+Tactic
+Technique
+Technique
+ID
+Evidence
+Discovery
+Remote System Discovery
+T1018
+NTLM negotiation and SMB probing of Domain Controller 
+10.11.28.2 .
+Discovery
+Domain Trust Discovery
+T1482
+DNS SRV query for PDC LDAP services in 
+mytallbeer.com .
+Command and
+Control
+Application Layer Protocol: Web
+Protocols
+T1071.001
+Interactive C2 communication coordinating discovery tasks.
+5. CONTAINMENT, ERADICATION AND RECOVERY
+Immediate Actions
+Isolate compromised host 10.11.28.101 to sever the attacker's foothold into the internal network.
+Review Windows Event Logs on Domain Controller 10.11.28.2 (Event IDs 4624, 4625, 4672, 4768, 4769) for unauthorized
+logons from 10.11.28.101 .
+Reset passwords and invalidate Kerberos tickets (KRBTGT) for all domain administrative accounts.
+Additional Recommendations
+Active Directory Hardening: Disable NTLMv1 and restrict NTLM authentication across internal subnets in favor of Kerberos
+with AES encryption.
+Network Segmentation: Implement firewall access control lists (ACLs) restricting workstation access to Domain Controller
+management ports (139, 445, 389).
+Monitoring: Configure alert rules for anomalous DNS SRV discovery queries (e.g., _msdcs lookups originating from
+standard client endpoints).
+Recovery: Perform integrity verification and baseline comparisons on Domain Controller system binaries and group policies.
+6. CONCLUSION
+During Phase 4, network analysis confirmed that internal workstation 10.11.28.101 targeted the enterprise Active Directory
+Domain Controller at IPv4 address 10.11.28.2 with hostname WIN-FGG5B8C1BYF (domain: mytallbeer.com ). The flag 
+CTK{10.11.28.2|WIN-FGG5B8C1BYF} was submitted and successfully conquered on the CyberEx assessment portal.
+7. EVIDENCE LIMITATIONS
+Domain Controller internal audit event logs were not provided in the PCAP capture.
+Encrypted Kerberos and SMB payload details could not be decrypted without the domain private keys.
+8. APPENDICES
+Appendix A - Investigation Queries
+import.id:"9159a1b68fa050d28393c1863352b9d1" AND event.dataset:zeek.ntlm | groupby ntlm.server.nb.name
+import.id:"9159a1b68fa050d28393c1863352b9d1" AND dns.query.name:"_ldap._tcp.pdc._msdcs.mytallbeer.com"
+import.id:"9159a1b68fa050d28393c1863352b9d1" | groupby destination.ip
+1. 
+2. 
+3. 
+• 
+• 
+• 
+• 
+• 
+• 
+--- page 5 ---
+Appendix B - Figures and Screenshots
+Figure 1: Security Onion Hunt NTLM authentication event revealing DC IP 10.11.28.2, server NetBIOS name WIN-FGG5B8C1BYF, and domain
+mytallbeer.com.
+Figure 2: CyberEx challenge portal validation confirming OFA P4-03 Domain Controller solved with flag CTK{10.11.28.2|WIN-FGG5B8C1BYF} for 997
+points.
+Figure 3: Security Onion Hunt DNS SRV query evidence confirming PDC resolution to win-fgg5b8c1byf.mytallbeer.com at 10.11.28.2.

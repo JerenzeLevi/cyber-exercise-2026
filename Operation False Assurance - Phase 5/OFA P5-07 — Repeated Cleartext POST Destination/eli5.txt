@@ -1,0 +1,13 @@
+What we were looking for:
+- Which address kept getting un-locked (cleartext, meaning not secretly scrambled even though it should be) messages, and how many "connections" that counts as.
+
+What we found:
+- The address was 74.195.13.150, and the count was 26.
+
+How we found it:
+- We found an address getting lots of plain, readable messages even though it was using the "secure" door number (443) - a red flag.
+- We tried counting three different ways: every single message (32), every connection that had at least one message (20), and every connection at all to that address (26).
+- The answer checker only accepted the last way of counting: all connections, even ones with no message.
+
+Answer:
+CTK{74.195.13.150|26}

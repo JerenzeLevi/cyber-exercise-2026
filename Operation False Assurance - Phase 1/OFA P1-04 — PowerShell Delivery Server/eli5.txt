@@ -1,0 +1,13 @@
+What we were looking for:
+- Which computer (address and door number, called a port) sent the bad script files (PowerShell, a way to give a computer instructions) to the victim.
+
+What we found:
+- The bad files came from 85.209.129.105, using door number 2020.
+
+How we found it:
+- We looked at every file the sick computer downloaded.
+- Two of them ended in ".ps1", which means they are instruction scripts.
+- Both of those script files, plus a giant zip file, all came from the same sender: 85.209.129.105 on door 2020.
+
+Answer:
+CTK{85.209.129.105|2020}

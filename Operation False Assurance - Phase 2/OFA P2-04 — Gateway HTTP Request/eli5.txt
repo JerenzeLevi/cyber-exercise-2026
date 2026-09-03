@@ -1,0 +1,13 @@
+What we were looking for:
+- What kind of message and web address the sick computer kept sending, over and over, to the remote-control server.
+
+What we found:
+- It sent a message (POST) to http://38.146.28.242/fakeurl.htm.
+
+How we found it:
+- We looked at every web message sent to the remote-control server's address.
+- All 48 messages used the exact same style: POST, same address /fakeurl.htm.
+- They repeated about once a minute, like a heartbeat check-in, so we knew this was the standard "I'm still here" message.
+
+Answer:
+CTK{POST|http://38.146.28.242/fakeurl.htm}

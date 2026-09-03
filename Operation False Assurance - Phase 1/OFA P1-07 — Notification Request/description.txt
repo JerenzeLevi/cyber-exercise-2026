@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+Which HTTP method and URI were used for the notification request, and what response status was returned?
+
+Submit exactly in this format: CTK{METHOD|URI|STATUS} Use exact capitalization.

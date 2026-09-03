@@ -1,0 +1,16 @@
+What we were looking for:
+- The first four strange, secure (locked) websites the sick computer talked to, in the order it visited them.
+
+What we found:
+- 1) dieselfilters.com at 209.59.180.92
+- 2) islonline.org at 23.23.49.179
+- 3) woop-bicks.com at 172.86.90.13
+- 4) cf-2-up.com at 45.61.150.28
+
+How we found it:
+- We listed all the phone-book lookups and secure connections from the sick computer, oldest first.
+- We matched each website name to the address it pointed to.
+- We picked the first four strange names before the well-known "remote control" software showed up later in the timeline.
+
+Answer:
+CTK{dieselfilters.com|209.59.180.92|islonline.org|23.23.49.179|woop-bicks.com|172.86.90.13|cf-2-up.com|45.61.150.28}

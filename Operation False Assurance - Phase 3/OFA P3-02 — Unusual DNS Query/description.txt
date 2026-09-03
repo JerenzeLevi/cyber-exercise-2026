@@ -1,0 +1,29 @@
+operation_false_assurance phase3 security-onion
+Operation False Assurance — Phase 3: Secondary Executable and Backdoor Communications
+
+What unusual DNS name was queried at the start of the capture?
+
+Submit exactly in this format: CTK{DNS_NAME} Use exact capitalization.
+
+View Hint
+Inspect the earliest DNS queries from 10.9.24.101.
+
+HISTORY:
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 1:23 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid.} 	incorrect	August 23, 2026 at 1:21 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 1:21 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid.} 	incorrect	August 23, 2026 at 1:21 PM
+CTK{xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 1:15 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 1:06 PM
+CTK{xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 11:01 AM
+CTK{fixatmu.pics} 	incorrect	August 23, 2026 at 11:01 AM
+CTK{fixatmu.pics} 	incorrect	August 23, 2026 at 11:01 AM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 23, 2026 at 11:00 AM
+CTK{xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 4:07 PM
+CTK{xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 4:05 PM
+CTK{fixatmu.pics} 	incorrect	August 22, 2026 at 3:58 PM
+CTK{fixatmu.pics} 	incorrect	August 22, 2026 at 3:57 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 3:55 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 3:49 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 3:48 PM
+CTK{xsppqsedvcfymaswjihwraid.xsppqsedvcfymaswjihwraid} 	incorrect	August 22, 2026 at 3:48 PM

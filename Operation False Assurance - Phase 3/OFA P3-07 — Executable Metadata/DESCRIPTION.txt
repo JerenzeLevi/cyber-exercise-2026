@@ -1,0 +1,17 @@
+Operation False Assurance — Phase 3: Secondary Executable and Backdoor Communications
+
+Provide the filename, MIME type, and response body size of the executable.
+
+Submit exactly in this format: CTK{FILENAME|MIME_TYPE|BYTES} Use exact capitalization.
+
+View Hint
+Use HTTP and file metadata. Submit size as digits only.
+
+HISTORY:
+CTK{Renewable.exe|application/x-dosexec|10647040} 	incorrect	August 23, 2026 at 1:26 PM
+CTK{Renewable.exe|application/x-msdownload|10647040} 	incorrect	August 23, 2026 at 1:22 PM
+CTK{Renewable.exe|application/x-msdownload|10647040} 	incorrect	August 23, 2026 at 1:22 PM
+CTK{Renewable.exe|application/x-dosexec|10647310} 	incorrect	August 23, 2026 at 1:18 PM
+CTK{Renewable.exe|application/x-dosexec|10647040} 	incorrect	August 23, 2026 at 1:05 PM
+CTK{Renewable.exe|application/x-dosexec|10647040} 	incorrect	August 23, 2026 at 12:57 PM
+CTK{Renewable.exe|application/x-dosexec|10647040} 	incorrect	August 23, 2026 at 12:56 PM

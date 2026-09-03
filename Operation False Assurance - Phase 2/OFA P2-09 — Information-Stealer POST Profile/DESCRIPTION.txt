@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 2: Remote Access and Information-Stealer Traffic
+
+What Content-Type was used, how many POST transactions occurred, and what was the largest request body size?
+
+Submit exactly in this format: CTK{CONTENT_TYPE|COUNT|BYTES} Use exact capitalization.
+
+View Hint
+Aggregate HTTP POSTs to the information-stealer destination. Submit size as digits only.

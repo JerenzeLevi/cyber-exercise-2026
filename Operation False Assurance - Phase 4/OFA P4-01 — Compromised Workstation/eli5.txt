@@ -1,0 +1,13 @@
+What we were looking for:
+- Which computer was the main one taken over by the bad guys in this part of the story.
+
+What we found:
+- The computer was 10.11.28.101.
+
+How we found it:
+- We looked at the alarm log and saw serious warnings (like "Dridex" and "DarkVNC," both known bad remote-control programs) all coming from one computer.
+- That computer made over 78 long-lasting connections to three different outside bad-guy computers.
+- It was also a normal member of the company's computer network, so it looked trusted from the inside, making it a great "home base" for attackers.
+
+Answer:
+CTK{10.11.28.101}

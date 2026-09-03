@@ -1,0 +1,15 @@
+What we were looking for:
+- Which computer got sick this time.
+- Which phone book helper it used.
+
+What we found:
+- The sick computer was 10.8.20.101.
+- It used phone book helper 10.8.20.1.
+
+How we found it:
+- We looked at the alarm log (Security Onion Alerts) and saw lots of warnings, all coming from one computer.
+- We checked which computer's warnings matched with which phone book helper it used to look up addresses.
+- Every single lookup from that computer went through the same helper, so we knew they were a pair.
+
+Answer:
+CTK{10.8.20.101|10.8.20.1}

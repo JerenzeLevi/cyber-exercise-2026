@@ -1,0 +1,12 @@
+What we were looking for:
+- We don't actually know yet - this challenge's question was never given to us.
+
+What we found:
+- Nothing yet. There is no clue, no description, and no answer material for this one anywhere.
+
+How we found it:
+- We checked everywhere (writeups, reports, screenshots) for this challenge and found nothing at all.
+- This empty file just holds the spot in the numbering (challenge 9) until someone gives us the real question.
+
+Answer:
+Not solved yet - no question or material exists for this challenge yet.

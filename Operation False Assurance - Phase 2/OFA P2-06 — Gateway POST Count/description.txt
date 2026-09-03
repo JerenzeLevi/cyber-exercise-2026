@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 2: Remote Access and Information-Stealer Traffic
+
+How many POST transactions to the NetSupport gateway are indexed?
+
+Submit exactly in this format: CTK{COUNT} Use exact capitalization.

@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Provide the executable filename, MIME type, and response body size.
+
+Submit exactly in this format: CTK{FILENAME|MIME_TYPE|BYTES} Use exact capitalization.
+
+View Hint
+Use HTTP and file metadata. Submit size as digits only.

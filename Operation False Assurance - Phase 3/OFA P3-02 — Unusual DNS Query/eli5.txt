@@ -1,0 +1,13 @@
+What we were looking for:
+- What strange website name was one of the very first things the sick computer asked the phone book about.
+
+What we found:
+- Not solved yet. We found two strange-looking names, but neither one was accepted as correct.
+
+How we found it:
+- We looked at the earliest phone-book questions from the sick computer.
+- One name looked like random computer-made letters (a sign of malware). The other looked like a short, made-up website.
+- We tried both, in a few different spellings, but the answer checker said no every time.
+
+Answer:
+Not solved yet - no confirmed answer.

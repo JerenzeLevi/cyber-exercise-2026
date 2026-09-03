@@ -1,0 +1,15 @@
+What we were looking for:
+- What web address delivered a big zipped-up folder (an archive).
+- What it was named and how big it was.
+
+What we found:
+- The address was /testl11.
+- The file was named test.zip and was 26,922,546 bytes (a big chunk of data) big.
+
+How we found it:
+- We kept following the same list of web requests after the tunnel message.
+- The next big request was for "/testl11", and it downloaded a huge file.
+- We double-checked the file record separately, and the size matched exactly.
+
+Answer:
+CTK{/testl11|test.zip|26922546}

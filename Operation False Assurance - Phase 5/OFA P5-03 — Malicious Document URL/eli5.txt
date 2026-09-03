@@ -1,0 +1,13 @@
+What we were looking for:
+- The full web address that gave the victim a bad document (like a fake IRS letter) to open.
+
+What we found:
+- The address was http://r2consulting.net/IRS-TRANSCRIPTS-037J/2/
+
+How we found it:
+- We looked at the earliest web downloads from the infected computer.
+- We found one that looked like a document, not a picture or webpage.
+- We wrote down its full web address.
+
+Answer:
+CTK{http://r2consulting.net/IRS-TRANSCRIPTS-037J/2/}

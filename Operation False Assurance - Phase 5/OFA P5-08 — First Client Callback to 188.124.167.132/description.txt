@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Identify the infected client’s first POST to 188.124.167.132:8082. Provide the UTC time and URI path.
+
+Submit exactly in this format: CTK{YYYY-MM-DD HH:MM:SS UTC|URI} Use exact capitalization.
+
+View Hint
+Filter HTTP from 192.168.200.95 to 188.124.167.132:8082 and sort ascending.

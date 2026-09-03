@@ -1,0 +1,13 @@
+What we were looking for:
+- Which inside computer received file-sharing (SMB) connections from the sick computer, and when the first one happened.
+
+What we found:
+- The boss computer 10.11.28.2 received the connections, using door number 445, and the first one was at 2025-10-08 09:12:36 UTC.
+
+How we found it:
+- We looked at file-sharing (SMB) records between the sick computer and the boss computer.
+- We counted 7 of these connections and found the very first one's timestamp.
+- We also saw extra "look around the network" style traffic at the same time, suggesting the bad guys were exploring, not just sharing normal files.
+
+Answer:
+CTK{10.11.28.2|445|2025-10-08 09:12:36 UTC}

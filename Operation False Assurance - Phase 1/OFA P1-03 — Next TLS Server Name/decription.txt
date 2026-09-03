@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+Which TLS server name appeared immediately after the first website, and what IPv4 address did it use?
+
+Submit exactly in this format: CTK{TLS_SERVER_NAME|IP} Use exact capitalization.

@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Which three PNG-named objects were requested by the domain controller after compromise?
+
+Submit exactly in this format: CTK{FILENAME1|FILENAME2|FILENAME3} Use exact capitalization.

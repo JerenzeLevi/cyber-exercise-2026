@@ -1,0 +1,13 @@
+What we were looking for:
+- The file name, file type, and size of the program downloaded in OFA P5-05.
+
+What we found:
+- The file was named 90352.exe, size 126,976 bytes, and its type-label is application/octet-stream (a generic "just data" label).
+
+How we found it:
+- We opened the file record for that download and found the name and size right away.
+- We first guessed a specific technical type-label, but it was rejected.
+- We tried a more generic, everyday type-label instead, and that one worked.
+
+Answer:
+CTK{90352.exe|application/octet-stream|126976}

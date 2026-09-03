@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Identify the initially infected client IPv4 address and hostname.
+
+Submit exactly in this format: CTK{IP|HOSTNAME} Use exact capitalization.
+
+View Hint
+Use DHCP and connection metadata.

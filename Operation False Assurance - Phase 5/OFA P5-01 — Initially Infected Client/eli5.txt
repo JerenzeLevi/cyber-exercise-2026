@@ -1,0 +1,13 @@
+What we were looking for:
+- Which computer got infected first, its address, and its name.
+
+What we found:
+- The computer was 192.168.200.95, named Linwood-Win-PC.
+
+How we found it:
+- We looked at the records that assign addresses to computer names (DHCP is like a name tag list).
+- We matched that up with which computer started doing bad stuff first.
+- That gave us both the address and the name together.
+
+Answer:
+CTK{192.168.200.95|Linwood-Win-PC}

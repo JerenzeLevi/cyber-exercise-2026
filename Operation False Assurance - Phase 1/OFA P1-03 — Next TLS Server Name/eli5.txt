@@ -1,0 +1,15 @@
+What we were looking for:
+- After the first website, what was the next secure (locked, HTTPS) website the computer talked to.
+- What address that next website used.
+
+What we found:
+- The next website was louglas.com.
+- Its address was 192.153.57.201.
+
+How we found it:
+- We listed all the secure/locked connections (called TLS) made by the sick computer, oldest first.
+- The first few were just the same website loading its parts (sepco.com).
+- Right after those, a brand new website name showed up: louglas.com, going to a new address.
+
+Answer:
+CTK{louglas.com|192.153.57.201}

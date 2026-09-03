@@ -1,0 +1,15 @@
+What we were looking for:
+- What kind of message and web address the computer used to tell the bad guys "I ran your script."
+- What answer it got back.
+
+What we found:
+- It sent a message (called a POST) to the address /notify.
+- It got back an "OK" answer, code 200.
+
+How we found it:
+- We kept walking through the same list of web requests after the second script.
+- The next one was a small message called POST, sent to "/notify" - too small to be a file, more like a quick "hello, I'm here."
+- The server replied 200, meaning it worked.
+
+Answer:
+CTK{POST|/notify|200}

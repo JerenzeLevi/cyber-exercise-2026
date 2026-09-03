@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+Identify the IPv4 address and TCP port of the server that delivered the PowerShell-related files.
+
+Submit exactly in this format: CTK{IP|PORT} Use exact capitalization.

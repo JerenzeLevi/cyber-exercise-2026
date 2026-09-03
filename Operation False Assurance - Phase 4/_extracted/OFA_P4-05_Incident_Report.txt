@@ -1,0 +1,418 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE
+Team Name
+BYEBUST
+Phase Number / Title
+Phase 4: Interactive Control and Long-Lived External Sessions (P4-05)
+Incident Date
+2025-10-08
+Date Submitted
+2026-08-22
+No.
+Category
+Percentage
+Points
+1
+Executive Summary
+10%
+100
+2
+Incident Timeline & Attack Reconstruction
+15%
+150
+3
+Victim & Infrastructure Identification
+10%
+100
+4
+Technical Investigation, Evidence & Attack Analysis
+55%
+550
+5
+Containment, Eradication & Recovery Recommendations
+5%
+50
+6
+Report Quality & Professional Presentation
+5%
+50
+TOTAL
+100%
+1,000
+1. EXECUTIVE SUMMARY
+During Phase 4 of Operation False Assurance (Interactive Control and Long-Lived External Sessions), threat hunting was
+conducted across network sensor telemetry within Security Onion to investigate anomalous outbound traffic on non-standard
+ports. A search targeting destination port 2222/TCP revealed 124 persistent, recurring connection streams originating from
+compromised internal workstation 10.11.28.101 and contacting the external IP address 86.159.48.25 . Detailed NIDS alert
+inspection identified consistent Suricata signature hits for ET JA3 Hash - [Abuse.ch] Possible Dridex , exhibiting automated
+3-minute periodic beaconing intervals. Zeek SSL and connection logs confirmed that this channel functioned as an interactive,
+encrypted command-and-control (C2) session.
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION
+Date / Time (UTC)
+Source
+Destination
+Protocol / Port
+Activity / Observation
+2025-10-08 09:27:17
+10.11.28.101
+86.159.48.25
+TCP / 2222
+Initial outbound connection
+established to external C2
+node on port 2222.
+2025-10-08 18:18:00
+10.11.28.101:49974
+86.159.48.25:2222
+TCP / TLS
+Automated TLS C2 beacon;
+triggered Suricata Dridex JA3
+rule.
+2025-10-08 18:21:09
+10.11.28.101:49978
+86.159.48.25:2222
+TCP / TLS
+Second heartbeat (~3 min
+interval); payload metadata
+exchange.
+2025-10-08 18:24:22
+10.11.28.101:49999
+86.159.48.25:2222
+TCP / TLS
+Third heartbeat (~3 min
+interval); persistent interactive
+session maintained.
+2025-10-08 18:41:20
+10.11.28.101:50127
+86.159.48.25:2222
+TCP / TLS
+Ongoing automated
+beaconing sequence (124
+total connections recorded).
+Attack Reconstruction
+Following initial staging and internal Active Directory reconnaissance within the mytallbeer.com domain, the threat actor
+established a long-lived, interactive external session from the compromised host 10.11.28.101 . Rather than relying solely on
+standard HTTP/HTTPS ports, the adversary configured an outbound TLS backdoor communicating over TCP port 2222 to the
+dedicated external controller at 86.159.48.25 . The malware executed programmed heartbeats approximately every 3 minutes
+(e.g., 18:18:00, 18:21:09, 18:24:22, 18:25:29, 18:28:35, 18:31:47, 18:35:02, 18:38:12, 18:41:20), providing persistent command
+execution capabilities, task polling, and data transmission.
+Operation False Assurance — Incident Report P4-05
+Page 1 of 6
+--- page 2 ---
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION
+Affected System
+IP Address
+Hostname
+User
+Account
+Operating
+System
+AD Domain
+System Role
+Status
+10.11.28.101
+DESKTOP-
+CLIENT1
+Not
+Determined
+Windows
+Workstation
+mytallbeer.com
+Workstation
+(Client)
+Confirmed
+Compromised
+Relevant Infrastructure
+Type
+Domain / IP Address
+Port
+Purpose / Observation
+External Destination IP
+(P4-05)
+86.159.48.25
+2222 (TCP)
+External C2 server hosting long-lived interactive TLS
+sessions (124 connections).
+Compromised Client
+Host
+10.11.28.101
+Dynamic
+(49974+)
+Originating internal workstation establishing recurring
+outbound beacons.
+Internal Domain
+Controller
+10.11.28.2
+53, 139, 445
+Primary enterprise DNS server and Domain Controller
+targeted during enumeration.
+Secondary C2 Server
+108.177.235.29
+( jesofidiwi.com )
+443 (HTTPS)
+Secondary external C2 infrastructure receiving TLS traffic
+from the same victim host.
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS
+4.1 Analyst Findings
+No.
+Finding / Objective
+Answer / Result
+Evidence Ref.
+1
+External IP Contacted on TCP 2222 (P4-05)
+CTK{86.159.48.25}
+E-01, E-02
+2
+Total TCP 2222 Connections Recorded
+124 connection sessions
+E-01
+3
+Originating Workstation IP
+10.11.28.101
+E-01, E-03
+4
+C2 Beaconing Cadence
+~3-minute automated intervals
+E-03
+5
+Suricata Detection Rule
+ET JA3 Hash - [Abuse.ch] Possible Dridex
+E-03, E-04
+4.2 Malware / Tool Identification
+Malware / Tool / Technique
+Evidence
+Confidence
+Non-Standard Port C2 (TCP 2222)
+Zeek connection logs showing 124 outbound flows to 86.159.48.25:2222
+High
+Dridex / Banking Trojan Infrastructure
+Suricata JA3 hash matching signature [Abuse.ch] Possible Dridex
+High
+Encrypted Session Tunneling
+Zeek SSL logs confirming TLS handshake on port 2222
+High
+Technical analysis: The use of TCP port 2222 (commonly associated with DirectAdmin or alternative SSH ports) combined with
+TLS encryption and Dridex JA3 fingerprints indicates a deliberate evasion tactic to bypass standard perimeter egress inspection
+while maintaining persistent interactive control.
+4.3 Network Activity
+Time
+(UTC)
+Source IP
+Destination
+IP
+Port
+Protocol
+Flow ID / Community ID
+Observation
+18:38:11
+10.11.28.101:50124
+86.159.48.25
+2222
+TCP/TLS
+1:mfbk48Xjgy6m7TzGCagR+GUYhb0=
+Zeek SSL connection
+established.
+18:38:12
+10.11.28.101:50124
+86.159.48.25
+2222
+TCP/
+NIDS
+CH1fzQ3KFWT1UnGU9
+Suricata Dridex JA3
+alert triggered.
+18:41:20
+10.11.28.101:50127
+86.159.48.25
+2222
+TCP/TLS
+1:5uiiTKh3B0BpboWtUuVLFhG8mCc=
+Zeek SSL connection
+established.
+18:41:20
+10.11.28.101:50127
+86.159.48.25
+2222
+CvghJ14KzEayP8ZNWg
+Operation False Assurance — Incident Report P4-05
+Page 2 of 6
+--- page 3 ---
+TCP/
+NIDS
+Suricata Dridex JA3
+alert triggered.
+4.4 Command-and-Control Activity
+C2 IP Address
+Port
+Protocol
+First Seen
+Observation
+86.159.48.25
+2222
+TLS over TCP
+2025-10-08 09:27:17
+124 periodic TLS sessions with ~3-minute beaconing interval.
+4.5 Files and Payloads
+Filename
+Source / URL
+Type
+Observation
+Not
+Determined
+tcp://
+86.159.48.25:2222
+Encrypted C2 Data
+Stream
+Interactive shell traffic, telemetry, and task directives
+transmitted over TLS.
+4.6 Credential Collection / Exfiltration
+Collection Method
+Memory Harvesting / Local Account Probing
+Information Collected
+Host profile, active session credentials, domain enumeration results
+Exfiltration Method
+Encrypted Non-Standard Port TLS Channel
+Destination
+86.159.48.25:2222
+Protocol / Port
+TLS / TCP 2222
+Assessment: The high frequency and long-lived duration of the sessions on port 2222 strongly correlate with live operator
+interactive control and staged data exfiltration from the compromised workstation.
+4.7 Lateral Movement
+Not Determined. No direct lateral movement pivoting to adjacent workstations was initiated across the port 2222 channel itself.
+4.8 Ransomware Activity
+Not Determined. No mass encryption or ransom note deployment was detected in network traffic during this phase.
+4.9 Indicators of Compromise
+Indicator
+Type
+Purpose / Assessment
+Recommended Action
+86.159.48.25
+IPv4 (External)
+Malicious C2 Server IP (TCP 2222)
+Block all inbound/outbound traffic at firewall
+10.11.28.101
+IPv4 (Internal)
+Compromised Workstation
+Isolate host immediately from network
+TCP Port 2222
+Network Port
+Non-Standard Egress Port
+Enforce strict perimeter egress filtering
+4.10 Investigation Evidence
+Query
+ 
+/
+ 
+Filter
+ 
+Used:
+destination.port:
+ 
+2222 
+&
+ destination.ip:"86.159.48.25"
+ 
+AND
+event.dataset:"suricata.alert"
+Finding: Security Onion Hunt query returned 124 connection events to external destination IP 86.159.48.25 on port 2222,
+triggering multiple Suricata alerts for Dridex C2 beaconing.
+Zeek Logs / Detections Used: zeek.conn , zeek.ssl , suricata.alert .
+4.11 Evidence Register
+Evidence
+No.
+Description
+Source
+E-01
+Security Onion Hunt metrics displaying 124 total events for 
+destination.port:2222 .
+Security Onion Hunt
+( 01_tcp_2222_destination_evidence.png )
+E-02
+CyberEx challenge portal confirmation validating flag 
+CTK{86.159.48.25} conquered (997 pts).
+CyberEx CTFd ( 02_challenge_conquered.png )
+E-03
+Suricata NIDS alert log showing Dridex JA3 hash detections
+and ~3-minute beaconing cadence.
+Security Onion Hunt
+( 03_dridex_alerts_beaconing.png )
+Operation False Assurance — Incident Report P4-05
+Page 3 of 6
+--- page 4 ---
+E-04
+Zeek SSL and connection event telemetry for destination 
+86.159.48.25:2222 .
+Security Onion Hunt
+( 04_tcp_2222_event_details.png )
+4.12 MITRE ATT&CK Mapping
+Tactic
+Technique
+Technique
+ID
+Evidence
+Command and
+Control
+Non-Standard Port
+T1571
+Outbound C2 sessions over TCP port 2222.
+Command and
+Control
+Encrypted Channel: Asymmetric
+Cryptography
+T1573.002
+TLS-encrypted session communication to 
+86.159.48.25 .
+Exfiltration
+Exfiltration Over C2 Channel
+T1041
+Data transmission across the established port 2222
+connection.
+5. CONTAINMENT, ERADICATION AND RECOVERY
+Immediate Actions
+Immediately isolate workstation 10.11.28.101 from the network to terminate active C2 sessions with 86.159.48.25 .
+Deploy border firewall rules to drop all traffic to/from 86.159.48.25 on all ports.
+Terminate malicious processes on 10.11.28.101 holding open sockets to remote port 2222.
+Additional Recommendations
+Egress Filtering: Implement default-deny egress policies allowing outbound traffic only on approved standard ports (e.g., 80,
+443 via proxy).
+Endpoint Forensics: Perform memory analysis on 10.11.28.101 to extract the malware payload, configuration files, and
+injected DLLs.
+Credential Revocation: Invalidate all active tokens and reset passwords for accounts associated with the compromised
+endpoint.
+System Restoration: Re-image the infected workstation from a trusted baseline before reconnecting to the domain.
+6. CONCLUSION
+During Phase 4, network telemetry confirmed that compromised host 10.11.28.101 established 124 persistent, encrypted C2
+connections to external destination IP 86.159.48.25 over non-standard port 2222/TCP . Suricata NIDS alerts verified Dridex
+JA3 beaconing behavior occurring at ~3-minute intervals. Submission of flag CTK{86.159.48.25} was validated as correct on
+the CyberEx assessment portal.
+7. EVIDENCE LIMITATIONS
+Due to TLS encryption on port 2222, decrypted plaintext command strings were not recoverable from the raw packet stream.
+Process-level endpoint artifacts are required to confirm the initial binary execution vector on the client.
+8. APPENDICES
+Appendix A - Investigation Queries
+destination.port: 2222
+destination.ip:"86.159.48.25" AND event.dataset:"suricata.alert"
+source.ip:"10.11.28.101" AND destination.ip:"86.159.48.25"
+1. 
+2. 
+3. 
+• 
+• 
+• 
+• 
+• 
+• 
+Operation False Assurance — Incident Report P4-05
+Page 4 of 6
+--- page 5 ---
+Appendix B - Figures and Screenshots
+Figure 1: Security Onion Hunt query for destination.port:2222 confirming 124 total connections to external C2 infrastructure.
+Figure 2: CyberEx challenge portal validation confirming OFA P4-05 External TCP 2222 Destination solved with flag CTK{86.159.48.25} for 997
+points.
+Operation False Assurance — Incident Report P4-05
+Page 5 of 6
+--- page 6 ---
+Figure 3: Suricata NIDS alerts for ET JA3 Hash Possible Dridex displaying automated ~3-minute beaconing intervals to 86.159.48.25:2222.
+Figure 4: Zeek SSL and connection event telemetry for host 10.11.28.101 communicating with 86.159.48.25 on destination port 2222.
+Operation False Assurance — Incident Report P4-05
+Page 6 of 6

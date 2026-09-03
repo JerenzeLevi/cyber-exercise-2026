@@ -1,0 +1,13 @@
+What we were looking for:
+- What website name kept talking to a certain bad-guy address (91.212.166.160) later on.
+
+What we found:
+- The website name was georgej.ru.
+
+How we found it:
+- We searched for every secure/locked connection between the sick computer and that specific bad address.
+- We found 9 separate connections, and all of them used the same website name.
+- That name also matched an earlier phone-book lookup we had already seen, so the two clues agreed with each other. This looked like the bad guys checking in again and again (called beaconing).
+
+Answer:
+CTK{georgej.ru}

@@ -1,0 +1,12 @@
+What we were looking for:
+- When the infected computer first "called home" to the bad guys' server, and what web address it used.
+
+What we found:
+- The first call was at 2025-10-11 09:07:06 UTC, to /del9/LINWOOD-WIN-PC_W617601.A59A58979C2CD535524D2D1317484AC8/90
+
+How we found it:
+- We looked for every message from the infected computer to the bad guys' server on its special door number (8082).
+- We sorted them oldest first and read the very first one's time and web address.
+
+Answer:
+CTK{2025-10-11 09:07:06 UTC|/del9/LINWOOD-WIN-PC_W617601.A59A58979C2CD535524D2D1317484AC8/90}

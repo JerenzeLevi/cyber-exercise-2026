@@ -1,0 +1,13 @@
+What we were looking for:
+- Which address a password/data-stealing program (called an information-stealer, it's malware that grabs your saved passwords and files) sent stolen data to, and which web address it used.
+
+What we found:
+- The stealer sent data to 79.141.165.202, at the web address /a9b024dccb2b4f24.php.
+
+How we found it:
+- We searched the alarm log for a known password-stealing program called "StealC" and found matching warnings from the sick computer.
+- Those warnings pointed to one specific address.
+- We looked at the actual web message and saw it was a POST (a way of sending data) to a specific page, matching the alarms exactly.
+
+Answer:
+CTK{79.141.165.202|/a9b024dccb2b4f24.php}

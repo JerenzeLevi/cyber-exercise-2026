@@ -1,0 +1,733 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+OPERATION FALSE ASSURANCE 
+ 
+Team Name 
+ 
+Phase Number / Title 
+Phase 4 - P4-10: SMB to Domain Controller 
+Incident Date 
+2025-10-08 (UTC) 
+Date Submitted 
+2026-08-22 
+ 
+REPORT SCORING 
+No. 
+Category 
+Percentage 
+Points 
+1 
+Executive Summary 
+10% 
+100 
+2 
+Incident Timeline & Attack Reconstruction 
+15% 
+150 
+3 
+Victim & Infrastructure Identification 
+10% 
+100 
+4 
+Technical Investigation, Evidence & Attack 
+Analysis 
+55% 
+550 
+5 
+Containment, Eradication & Recovery 
+Recommendations 
+5% 
+50 
+6 
+Report Quality & Professional Presentation 
+5% 
+50 
+ 
+TOTAL 
+100% 
+1,000 
+Evidence Requirement: Major findings must be supported by Security Onion, Kibana, Elasticsearch, Zeek, Suricata, or other 
+authorized evidence. Unsupported findings may receive no more than 50% of the available points for that finding. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- page 2 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+1. EXECUTIVE SUMMARY 
+10% - 100 Points 
+Summarize the activity observed during this phase. State what happened, the affected system, the nature of the 
+malicious activity, and the operational significance. 
+On 2025-10-08, compromised workstation 10.11.28.101 was observed establishing repeated authenticated SMB 
+sessions (TCP/445) to internal server 10.11.28.2, identified via Zeek smb_mapping.log as WIN-
+FGG5B8C1BYF.mytallbeer.com - a Domain Controller for the mytallbeer.com Active Directory domain. 
+Seven SMB (TCP/445) connections were confirmed between 10.11.28.101 and the Domain Controller, the first 
+observed at 2025-10-08 09:12:36 UTC (an earlier related session on TCP/139 to the same host was logged at 
+09:00:05 UTC). Six sessions mapped the IPC$ administrative pipe and one session mapped the SYSVOL share. 
+The same host pair also exchanged a high volume of Active Directory protocol traffic in the surrounding window - 
+DNS, LDAP/LDAP-search, Kerberos, and DCE-RPC (epmapper, netlogon, lsarpc, and 80 drsuapi calls including 
+DRSBind/DRSCrackNames/DRSUnbind) - consistent with directory-service enumeration or replication-protocol 
+activity originating from the workstation. 
+No IDL_DRSGetNCChanges call (the operation used to pull replicated data/password hashes, e.g. DCSync) was 
+found in the reviewed dce_rpc data, so a confirmed credential-dumping event is not established from this evidence 
+alone. 
+Operational significance: SMB/administrative-pipe access to a Domain Controller from a workstation, combined 
+with directory-enumeration RPC activity, is consistent with the lateral-movement / interactive-control stage of this 
+intrusion (Operation False Assurance Phase 4) and warrants immediate isolation of 10.11.28.101 and review of 
+authentication logs on the DC. 
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION 
+15% - 150 Points 
+Record the significant events in chronological order. Use UTC for all timestamps. 
+Date / Time (UTC) Source 
+Destination 
+Protocol / Port 
+Activity / Observation 
+2025-10-08 
+09:00:05 UTC 
+10.11.28.101 
+10.11.28.2:139 
+SMB / TCP 139 
+smb_mapping: \\WIN-
+FGG5B8C1BYF\IPC$ (PIPE) 
+mapped - first observed SMB-
+related session to the DC 
+2025-10-08 
+09:12:36 UTC 
+10.11.28.101 
+10.11.28.2:445 
+SMB / TCP 445 
+First SMB session on TCP/445 
+to the DC; IPC$ mapped 
+(source port 49826) 
+2025-10-08 
+09:27:36 - 
+10:12:36 UTC 
+10.11.28.101 
+10.11.28.2:445 
+SMB / TCP 445 
+4 additional SMB/445 sessions; 
+IPC$ repeatedly mapped (~15 
+min interval) 
+2025-10-08 
+10:21:44 UTC 
+10.11.28.101 
+10.11.28.2:445 
+SMB / TCP 445 
+SMB session maps \\...\sysvol 
+(DISK share) - policy/script 
+volume access 
+2025-10-08 
+10:27:36 UTC 
+10.11.28.101 
+10.11.28.2:445 
+SMB / TCP 445 
+7th and last observed SMB/445 
+session; IPC$ mapped 
+2025-10-08 
+10:37:42 - 
+10:42:35 UTC 
+10.11.28.101 
+10.11.28.2:135/49667 
+DCE-RPC 
+(epmapper, 
+drsuapi) 
+epmapper ept_map lookups 
+followed by drsuapi DRSBind / 
+DRSCrackNames / 
+DRSUnbind calls 
+--- page 3 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+Attack Reconstruction 
+Describe how the activity developed during the phase, what the attacker accomplished, and how the available 
+evidence supports the conclusion. 
+The workstation's first recorded interaction with the Domain Controller in this window is an SMB/NetBIOS session 
+on TCP/139 at 09:00:05 UTC, followed 7.5 minutes later by the first SMB session on the standard TCP/445 port 
+(09:12:36 UTC) - the connection this finding is scored on. 
+Over the following ~75 minutes, six more SMB/445 sessions occurred at roughly 15-minute intervals, each mapping 
+the IPC$ administrative named-pipe share used for RPC-over-SMB (DCE-RPC endpoint access), with one session 
+additionally mapping the SYSVOL DISK share. 
+In the same window, LDAP/LDAP-search, Kerberos and DCE-RPC traffic (epmapper, netlogon, lsarpc, and 80 
+drsuapi calls) was exchanged between the same two hosts, culminating in repeated DRSBind / DRSCrackNames / 
+DRSUnbind sequences at 10:37:42 and 10:42:35 UTC. 
+This pattern - authenticated SMB/IPC$ access paired with directory-replication-service (drsuapi) RPC calls - is 
+consistent with AD reconnaissance/enumeration tooling (e.g. BloodHound-style collectors or similar) run from the 
+compromised workstation against the DC, rather than routine end-user file access. 
+No IDL_DRSGetNCChanges call was observed, so full replication/DCSync-style hash extraction is not confirmed; 
+the available evidence supports confirmed lateral SMB access and AD enumeration against the Domain Controller. 
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION 
+10% - 100 Points 
+Affected System 
+IP Address 
+10.11.28.101 
+Hostname 
+Not Determined (not resolvable from network metadata alone) 
+User Account 
+Not Determined 
+Operating System 
+Not Determined (Windows inferred from SMB/DCE-RPC client behavior) 
+Active Directory Domain 
+mytallbeer.com (inferred from target DC's FQDN) 
+System Role 
+Workstation, internal segment (10.11.28.0/24) 
+Status 
+Confirmed Compromised - actively issuing authenticated SMB and AD 
+directory-service (drsuapi) sessions against the Domain Controller 
+Status: Confirmed Compromised / Suspected Compromised / Targeted / Scanned / Not Determined 
+Relevant Infrastructure 
+Type 
+Domain / IP Address 
+Port 
+Purpose / Observation 
+Domain 
+Controller 
+10.11.28.2 (WIN-
+FGG5B8C1BYF.mytallbeer.com) 
+445 / 389 / 88 
+/ 135 / 49667 
+Target of SMB (IPC$, SYSVOL), LDAP, 
+Kerberos and DCE-RPC (drsuapi) sessions 
+from the compromised workstation 
+Victim 
+Workstation 
+10.11.28.101 
+ephemeral 
+(49794-
+50134) 
+Source of all SMB / LDAP / Kerberos / DCE-
+RPC sessions toward the DC 
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS 
+55% - 550 Points 
+This section contains the main technical findings. Each significant conclusion should be supported by evidence. 
+--- page 4 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+4.1 Analyst Findings 
+No. 
+Finding / Objective 
+Answer / Result 
+Evidence Ref. 
+1 
+Internal server receiving SMB connections 
+10.11.28.2 
+Figure 2 
+2 
+Destination port / protocol 
+445 / TCP 
+Figure 2 
+3 
+Source (compromised) workstation 
+10.11.28.101 
+Figure 2 
+4 
+First SMB (445) connection observed (UTC) 2025-10-08 09:12:36 UTC 
+Figure 3 
+5 
+Total SMB (445) sessions observed 
+7 sessions, 09:12:36 - 10:27:36 UTC 
+Figure 2 
+6 
+Destination host identity 
+WIN-FGG5B8C1BYF.mytallbeer.com 
+(Domain Controller, domain 
+mytallbeer.com) 
+Figure 4 
+7 
+SMB shares accessed 
+IPC$ (PIPE) x6, SYSVOL (DISK) x1 
+Figure 4 
+8 
+CTF Answer 
+CTK{10.11.28.2|445|2025-10-08 
+09:12:36 UTC} 
+Figure 2, 3 
+4.2 Network Activity 
+Time (UTC) 
+Source IP 
+Destination 
+IP 
+Port 
+Protocol 
+Domain / Host 
+Observation 
+2025-10-08 
+09:12:36.403 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+First SMB/445 
+session; IPC$ 
+mapped (src 
+port 49826) 
+2025-10-08 
+09:27:36.436 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+IPC$ mapped 
+(src port 49904) 
+2025-10-08 
+09:42:36.503 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+IPC$ mapped 
+(src port 49922) 
+2025-10-08 
+09:57:36.532 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+IPC$ mapped 
+(src port 49940) 
+2025-10-08 
+10:12:36.508 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+IPC$ mapped 
+(src port 
+49956) 
+2025-10-08 
+10:21:44.883 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+SYSVOL 
+(DISK) 
+mapped (src 
+port 49983) 
+2025-10-08 
+10:27:36.505 
+UTC 
+10.11.28.101 
+10.11.28.2 
+445 
+TCP/SMB 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+7th and last 
+SMB/445 
+session; IPC$ 
+mapped (src 
+port 50006) 
+Analysis: 
+All 7 SMB sessions used TCP/445 and were sourced from ephemeral ports (49826-50006) on 10.11.28.101 to 
+10.11.28.2:445, at fairly regular ~15-minute intervals, indicating a scheduled/automated process rather than 
+interactive manual browsing. 
+--- page 5 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+Six of the seven sessions mapped the IPC$ administrative named-pipe share (used to carry DCE-RPC traffic such 
+as drsuapi/lsarpc/netlogon over SMB); one session (10:21:44 UTC) additionally mapped the SYSVOL DISK share, 
+which hosts Group Policy Objects and logon scripts. 
+A related, earlier SMB/NetBIOS session on TCP/139 to the same destination (IPC$ mapped) was logged at 
+09:00:05 UTC, outside the TCP/445 scope of this specific finding but confirming the relationship began slightly 
+earlier. 
+4.3 Lateral Movement 
+Time (UTC) 
+Source 
+Destination 
+Port / Protocol 
+Activity 
+2025-10-08 
+09:12:36 UTC 10.11.28.101 
+10.11.28.2 
+(DC) 
+445/TCP SMB 
+First authenticated SMB session; IPC$ 
+administrative pipe mapped 
+2025-10-08 
+09:12-10:27 
+UTC 
+10.11.28.101 
+10.11.28.2 
+(DC) 
+445/TCP SMB 
+6 additional IPC$ sessions at ~15-min 
+intervals (7 total) 
+2025-10-08 
+10:21:44 UTC 10.11.28.101 
+10.11.28.2 
+(DC) 
+445/TCP SMB 
+SYSVOL share (DISK) mapped 
+2025-10-08 
+10:37:42-
+10:42:35 
+UTC 
+10.11.28.101 
+10.11.28.2 
+(DC) 
+135, 49667/TCP 
+DCE-RPC 
+epmapper ept_map lookups + drsuapi 
+DRSBind/DRSCrackNames/DRSUnbind 
+(AD enumeration) 
+throughout 
+window 
+10.11.28.101 
+10.11.28.2 
+(DC) 
+389, 88, 53 
+LDAP/Kerberos/DNS 
+Concurrent LDAP/LDAP-search, 
+Kerberos and DNS activity (285 conn / 
+204 dns / 92 ldap_search / 53 ldap / 8 
+kerberos events) 
+State whether the destination was merely contacted, targeted, or confirmed compromised. 
+The destination (10.11.28.2, the mytallbeer.com Domain Controller) was contacted with fully-established, 
+authenticated SMB sessions (IPC$/SYSVOL mapped) and DCE-RPC directory-service calls - i.e. more than a mere 
+port scan or unauthenticated probe. 
+Status: Contacted and session-established (SMB share mapping + drsuapi enumeration confirmed). Whether the 
+workstation obtained interactive command execution or write access on the DC, or exfiltrated replicated AD data, 
+was Not Determined from the available evidence (no IDL_DRSGetNCChanges observed). 
+4.4 Indicators of Compromise 
+Indicator 
+Type 
+Purpose / Assessment 
+Recommended Action 
+10.11.28.2 
+IPv4 
+(internal) 
+Domain Controller (WIN-
+FGG5B8C1BYF.mytallbeer.com) - 
+target of SMB/LDAP/Kerberos/DCE-
+RPC sessions from the 
+compromised workstation 
+Verify session source 
+against the approved admin 
+workstation list; audit DC 
+SMB and directory-service 
+logging 
+10.11.28.101 
+IPv4 
+(internal) 
+Compromised workstation - source 
+of the SMB/AD-enumeration 
+sessions 
+Isolate host, image for 
+forensics, and hunt for AD-
+recon/DCSync tooling 
+WIN-
+FGG5B8C1BYF.mytallbeer.com 
+Hostname / 
+FQDN 
+Identified Domain Controller for 
+domain mytallbeer.com 
+Cross-reference with asset 
+inventory; confirm DC 
+hardening/tiering controls 
+drsuapi DRSBind / 
+DRSCrackNames / DRSUnbind 
+(80 calls) 
+Behavioral 
+indicator 
+(DCE-RPC) 
+AD directory-replication-service 
+calls from a workstation - atypical 
+for standard user activity 
+Audit calling 
+account/process; alert 
+specifically on any 
+IDL_DRSGetNCChanges 
+(DCSync) call 
+--- page 6 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+4.5 Investigation Evidence 
+Query / Filter Used: 
+event.dataset:zeek.conn AND source.ip:10.11.28.101 AND destination.port:445   (Security Onion Hunt) 
+ 
+Finding: 
+Workstation 10.11.28.101 established 7 authenticated SMB (TCP/445) sessions with internal server 10.11.28.2, 
+first observed 2025-10-08 09:12:36 UTC; smb_mapping.log identifies the server as Domain Controller WIN-
+FGG5B8C1BYF.mytallbeer.com. 
+ 
+Evidence Reference: Figure 1-5 
+--- page 7 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+Kibana / Elasticsearch 
+Alerts / Suricata: Not Applicable - no Suricata/IDS alert corresponds to this specific SMB session activity; this 
+finding is based on Zeek protocol logs (conn, smb_mapping, dce_rpc) only. 
+Zeek Logs Used 
+ 
+conn 
+ 
+dns 
+ 
+http 
+ 
+ssl / tls 
+ 
+smtp 
+ 
+files 
+ 
+dhcp 
+ 
+kerberos 
+ 
+smb 
+ 
+other: smb_mapping, dce_rpc, ldap, ldap_search, kerberos, dns 
+Relevant observation: 
+smb.path values (\\WIN-FGG5B8C1BYF.mytallbeer.com\IPC$ and \...\sysvol) tie every SMB/445 session to the 
+same Domain Controller identity; corresponding log.id.uid values allow each smb_mapping record to be pivoted 
+back to its parent zeek.conn session. 
+ 
+4.6 Evidence Register 
+Evidence No. Description 
+Source 
+E-01 
+Security Onion Hunt query event.dataset:zeek.conn AND 
+source.ip:10.11.28.101 AND destination.port:445 - Total Found: 7 
+Security Onion 
+E-02 
+Full results table of the 7 SMB (TCP/445) connection events from 
+10.11.28.101 to 10.11.28.2, sorted by timestamp (UTC) 
+Security Onion / Zeek 
+conn.log 
+E-03 
+Expanded record of the earliest event confirming @timestamp: 
+2025-10-08T09:12:36.403Z 
+Security Onion / Zeek 
+conn.log 
+E-04 
+zeek.smb_mapping records showing smb.path \\WIN-
+FGG5B8C1BYF.mytallbeer.com\IPC$ and \sysvol, confirming DC 
+hostname/domain and shares accessed 
+Zeek (smb_mapping.log) 
+E-05 
+zeek.dce_rpc records showing drsuapi 
+(DRSBind/DRSCrackNames/DRSUnbind) and epmapper calls from 
+10.11.28.101 to the DC 
+Zeek (dce_rpc.log) 
+Each screenshot should include a short caption explaining what it shows. 
+4.7 MITRE ATT&CK Mapping 
+Tactic 
+Technique 
+Technique ID 
+Evidence 
+Lateral Movement 
+(TA0008) 
+Remote Services: 
+SMB/Windows Admin 
+Shares 
+T1021.002 
+7 SMB sessions (TCP/445) with 
+IPC$/SYSVOL mapping from 10.11.28.101 to 
+DC 10.11.28.2 (Figure 2, 4) 
+Discovery 
+(TA0007) 
+Domain Trust Discovery / 
+Account Discovery: Domain 
+Account 
+T1482 / 
+T1087.002 
+92 ldap_search + 53 ldap events and 
+DRSCrackNames calls against the DC 
+(Figure 5) 
+Discovery 
+Network Service Discovery 
+T1046 
+29 epmapper ept_map (RPC endpoint-
+--- page 8 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+(TA0007) 
+mapper) lookups preceding drsuapi/netlogon 
+binds (Figure 5) 
+Credential Access 
+(TA0006) 
+OS Credential Dumping: 
+DCSync (precursor activity 
+only) 
+T1003.006 
+80 drsuapi 
+DRSBind/DRSCrackNames/DRSUnbind calls 
+observed; no IDL_DRSGetNCChanges call 
+identified - full DCSync not confirmed (Figure 
+5) 
+5. CONTAINMENT, ERADICATION AND RECOVERY 
+5% - 50 Points 
+Provide recommendations based on the findings from this phase. 
+Immediate Actions 
+1. Isolate 10.11.28.101 from the network immediately and preserve a forensic image; treat the host as 
+compromised given its direct SMB/AD-enumeration access to the Domain Controller. 
+2. On the Domain Controller (10.11.28.2 / WIN-FGG5B8C1BYF.mytallbeer.com), review Security event logs 
+(4624/4625/5140/5145) for the account(s) that established the IPC$/SYSVOL sessions and drsuapi calls, and 
+confirm whether the source is an authorized administrator. 
+3. Force a credential reset for any account confirmed to have authenticated from 10.11.28.101, and review 
+Replicating Directory Changes / Replicating Directory Changes All permissions on the domain to reduce DCSync 
+exposure. 
+Additional Recommendations 
+Network: 
+Restrict SMB (TCP 139/445) and RPC (135, dynamic high ports) access to Domain Controllers to only approved 
+administrative source hosts/jump servers; alert on IPC$/SYSVOL access from non-admin workstations. 
+Endpoint: 
+Deploy/verify EDR coverage on 10.11.28.101 and sweep the 10.11.28.0/24 segment for the same behavioral 
+pattern (repeated IPC$ mapping + drsuapi calls) on other hosts. 
+Accounts / Credentials: 
+Reset credentials for any account used from 10.11.28.101 against the DC; audit and minimize membership of 
+groups holding Replicating Directory Changes / Replicating Directory Changes All rights. 
+Active Directory, if applicable: 
+Enable/verify Advanced Audit Policy for Directory Service Access and Account Management on the DC; adopt 
+tiered administration so standard workstations cannot query drsuapi directly. 
+Recovery: 
+Reimage 10.11.28.101 if compromise is confirmed; monitor the DC for renewed IPC$/drsuapi activity from the host 
+post-remediation, and specifically alert on any subsequent IDL_DRSGetNCChanges call. 
+6. CONCLUSION 
+Provide the team’s final assessment of the phase. State what happened, what system was affected, what the 
+attacker accomplished, the evidence supporting the conclusion, the impact, and how this phase relates to the larger 
+incident. 
+Security Onion Hunt data (Zeek conn.log) confirms that compromised workstation 10.11.28.101 established seven 
+authenticated SMB sessions on TCP/445 to internal server 10.11.28.2, the first at 2025-10-08 09:12:36 UTC. 
+--- page 9 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+Zeek smb_mapping.log identifies 10.11.28.2 as WIN-FGG5B8C1BYF.mytallbeer.com, a Domain Controller for the 
+mytallbeer.com Active Directory domain, and shows the workstation repeatedly mapping the IPC$ administrative 
+pipe and, once, the SYSVOL share. 
+Zeek dce_rpc.log further shows the same workstation issuing 80 drsuapi (DRSBind/DRSCrackNames/DRSUnbind) 
+calls alongside LDAP, Kerberos and epmapper traffic against the DC - behavior consistent with Active Directory 
+enumeration/reconnaissance rather than routine file access. 
+Impact: confirmed lateral network access from a compromised workstation to the organization's Domain Controller, 
+with directory-service enumeration; no confirmed data replication (DCSync) was observed in the reviewed window. 
+This finding represents the lateral-movement / interactive-control stage of Operation False Assurance Phase 4 and 
+should be correlated with earlier phases documenting how 10.11.28.101 was initially compromised. 
+7. EVIDENCE LIMITATIONS 
+List any information that could not be confirmed from the available data. Do not present assumptions as confirmed 
+facts. 
+The user account(s) and authentication method (NTLM vs Kerberos) used to establish the SMB and drsuapi 
+sessions were not confirmed from the available Zeek metadata alone. 
+The hostname, operating system, and logged-on user of 10.11.28.101 could not be determined from the reviewed 
+network data. 
+No IDL_DRSGetNCChanges call was found in the dce_rpc data reviewed; whether any directory data/password 
+hashes were actually replicated (DCSync) is Not Determined. 
+The specific tool responsible for the drsuapi enumeration pattern (e.g., BloodHound, Mimikatz, native tooling) was 
+not identified; attribution is based on protocol-level behavior only. 
+8. APPENDICES 
+Appendix A - Investigation Queries 
+Query: 
+event.dataset:zeek.conn AND source.ip:10.11.28.101 AND destination.port:445   (Security Onion Hunt) 
+ 
+Query: 
+event.dataset:zeek.smb_mapping AND source.ip:10.11.28.101   (Security Onion Hunt) 
+ 
+Query: 
+event.dataset:zeek.dce_rpc AND source.ip:10.11.28.101 | groupby dce_rpc.endpoint   (Security Onion Hunt) 
+ 
+Appendix B - Figures and Screenshots 
+Use sequential figure numbers. Each figure should include a short caption describing what the evidence 
+demonstrates. 
+Figure 
+Caption / Description 
+Figure 1 
+Figure 1 - Security Onion Hunt query event.dataset:zeek.conn AND source.ip:10.11.28.101 
+AND destination.port:445, Total Found: 7. 
+--- page 10 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+Figure 2 
+Figure 2 - Full events table of the 7 SMB (TCP/445) connections from 10.11.28.101 to 
+10.11.28.2, sorted by timestamp (UTC), timezone set to UTC. 
+Figure 3 
+Figure 3 - Expanded earliest event record confirming @timestamp: 2025-10-08T09:12:36.403Z, 
+destination.ip 10.11.28.2, destination.port 445. 
+Figure 4 
+Figure 4 - zeek.smb_mapping records showing smb.path \\WIN-
+FGG5B8C1BYF.mytallbeer.com\IPC$ and \sysvol - confirms Domain Controller 
+hostname/domain and shares accessed. 
+Figure 5 
+Figure 5 - zeek.dce_rpc records showing drsuapi (DRSBind / DRSCrackNames / DRSUnbind) 
+and epmapper calls from 10.11.28.101 to the Domain Controller. 
+ 
+Figure 1 - Security Onion Hunt query event.dataset:zeek.conn AND source.ip:10.11.28.101 AND destination.port:445, Total Found: 7. 
+ 
+Figure 2 - Full events table of the 7 SMB (TCP/445) connections from 10.11.28.101 to 10.11.28.2, sorted by timestamp (UTC), timezone 
+set to UTC. 
+--- page 11 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+ 
+Figure 3 - Expanded earliest event record confirming @timestamp: 2025-10-08T09:12:36.403Z, destination.ip 10.11.28.2, 
+destination.port 445. 
+ 
+Figure 4 - zeek.smb_mapping records showing smb.path \\WIN-FGG5B8C1BYF.mytallbeer.com\IPC$ and \sysvol - confirms Domain 
+Controller hostname/domain and shares accessed. 
+--- page 12 ---
+OPERATION FALSE ASSURANCE INCIDENT REPORT 
+CyberEx / EXERCISE USE ONLY 
+ 
+Figure 5 - zeek.dce_rpc records showing drsuapi (DRSBind / DRSCrackNames / DRSUnbind) and epmapper calls from 10.11.28.101 to 
+the Domain Controller. 
+REPORT QUALITY REQUIREMENTS 
+5% - 50 Points 
+ 
+Clear and logical organization 
+ 
+Correct technical terminology 
+ 
+Accurate use of timestamps 
+ 
+Readable screenshots 
+ 
+Properly labeled tables and figures 
+ 
+Consistent evidence references 
+ 
+Clear distinction between confirmed facts and analyst inference 
+ 
+Professional presentation and readability 
+SUBMISSION INSTRUCTIONS 
+1. Submit one report for each phase designated as Report-Required. 
+2. Submit the final report in PDF format unless otherwise directed. 
+3. Clearly indicate the team name, phase number, and phase title. 
+4. Use UTC for timestamps. 
+5. Major findings must be supported by evidence. 
+6. Screenshots must be numbered and captioned. 
+7. Do not include executable malware samples in the report. 
+8. State 'Not Determined' when a finding cannot be confirmed. 
+9. Ensure all screenshots, tables, and text are readable. 
+10. Reports must be submitted before the deadline announced by exercise control. 
+Evidence Rule: A correct finding without supporting Security Onion, Kibana, Elasticsearch, Zeek, Suricata, or other authorized 
+evidence may receive no more than 50% of the points assigned to that finding. Incorrect or fabricated evidence receives zero 
+points for the affected finding. 

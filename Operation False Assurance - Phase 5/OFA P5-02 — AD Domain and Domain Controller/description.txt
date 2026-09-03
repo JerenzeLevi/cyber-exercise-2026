@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+What is the Active Directory domain, and what are the domain controller hostname and IPv4 address?
+
+Submit exactly in this format: CTK{DOMAIN|DC_HOSTNAME|DC_IP} Use exact capitalization.

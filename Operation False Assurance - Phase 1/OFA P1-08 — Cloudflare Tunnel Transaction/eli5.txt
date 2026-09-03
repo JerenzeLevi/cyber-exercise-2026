@@ -1,0 +1,15 @@
+What we were looking for:
+- The name of a hidden tunnel (a secret pathway) the bad guys used to hide their real computer.
+- What web address it sent data to, and what answer came back.
+
+What we found:
+- The tunnel name was maintaining-shelter-bailey-ordinance.trycloudflare.com.
+- It sent data to /BSVjy5VpVrgO and got a "not found" answer, code 404.
+
+How we found it:
+- We kept following the sick computer's web requests in order.
+- After the "hello" message, it sent a bigger message, but this time to a strange, random-looking website name that uses a free tunneling service to hide the real bad computer.
+- The website said "not found" (404), maybe because the secret pathway was already closed.
+
+Answer:
+CTK{maintaining-shelter-bailey-ordinance.trycloudflare.com|/BSVjy5VpVrgO|404}

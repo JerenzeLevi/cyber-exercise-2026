@@ -1,0 +1,13 @@
+What we were looking for:
+- Three picture files (PNG) that the infected boss computer asked for after it got hacked.
+
+What we found:
+- table.png, toler.png, worming.png (in alphabetical/ABC order).
+
+How we found it:
+- We looked at the boss computer's web requests after it was hacked and found three files ending in ".png".
+- We first listed them in the order they happened in time, but that answer was rejected twice.
+- We tried listing them in simple ABC order instead, and that was accepted.
+
+Answer:
+CTK{table.png|toler.png|worming.png}

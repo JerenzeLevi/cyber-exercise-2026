@@ -1,0 +1,13 @@
+What we were looking for:
+- Which outside address received a "remote screen watching" connection (like someone watching your screen live) near the end of the recording.
+
+What we found:
+- The address was 78.31.67.7.
+
+How we found it:
+- We looked for unusually heavy traffic near the end of the timeline on the normal secure-website door number (443).
+- We found a long, heavy stream of data going to one specific outside address.
+- The alarm log confirmed this was a known "watch the screen remotely" virus tool called DarkVNC, not real web browsing.
+
+Answer:
+CTK{78.31.67.7}

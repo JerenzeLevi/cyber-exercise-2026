@@ -1,0 +1,13 @@
+What we were looking for:
+- The exact time of the very first connection to the bad address on the weird door number (2222).
+
+What we found:
+- It happened at 2025-10-08 09:01:59 (world clock time, called UTC).
+
+How we found it:
+- We listed all the connections to that address and door number, sorted oldest first.
+- We read the timestamp of the very first one.
+- That connection was a secretly-locked (encrypted) channel matching a known bad-guy virus fingerprint (Dridex).
+
+Answer:
+CTK{2025-10-08 09:01:59 UTC}

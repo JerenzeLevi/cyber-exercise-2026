@@ -1,0 +1,13 @@
+What we were looking for:
+- The office network's family name, and the boss computer's name and address.
+
+What we found:
+- The network family was oystertainment.com, the boss computer was OYSTER-DC at address 192.168.200.4.
+
+How we found it:
+- We watched login traffic between the infected computer and the office network.
+- One record spelled the family name with mixed capital letters, but the more trustworthy record spelled it all lowercase - we used the lowercase one.
+- That same traffic told us the boss computer's name and address.
+
+Answer:
+CTK{oystertainment.com|OYSTER-DC|192.168.200.4}

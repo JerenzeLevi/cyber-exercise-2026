@@ -1,0 +1,372 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE
+Team Name
+BYEBUST
+Phase Number / Title
+Phase 4: Interactive Control and Long-Lived External Sessions
+Incident Date
+2025-10-05
+Date Submitted
+2026-08-22
+No.
+Category
+Percentage
+Points
+1
+Executive Summary
+10%
+100
+2
+Incident Timeline & Attack Reconstruction
+15%
+150
+3
+Victim & Infrastructure Identification
+10%
+100
+4
+Technical Investigation, Evidence & Attack Analysis
+55%
+550
+5
+Containment, Eradication & Recovery Recommendations
+5%
+50
+6
+Report Quality & Professional Presentation
+5%
+50
+TOTAL
+100%
+1,000
+1. EXECUTIVE SUMMARY
+During Phase 4 of Operation False Assurance (Interactive Control and Long-Lived External Sessions), network forensics and
+authentication metadata were examined to uncover the underlying enterprise Active Directory domain infrastructure. Telemetry
+gathered from Zeek NTLM protocol negotiation logs ( zeek.ntlm ) revealed direct internal authentication from compromised
+workstation 10.11.28.101 to the primary Domain Controller at 10.11.28.2 ( WIN-FGG5B8C1BYF ). The authentication metadata
+successfully exposed the fully qualified Active Directory domain name as mytallbeer.com (FQDN: WIN-
+FGG5B8C1BYF.mytallbeer.com ). Identifying this domain infrastructure provides crucial attribution for credential staging,
+Kerberos/NTLM authentication boundaries, and internal privilege escalation vectors.
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION
+Date / Time
+(UTC)
+Source
+Destination
+Protocol / Port
+Activity / Observation
+2025-10-05
+08:00:00
+10.11.28.101:49794
+10.11.28.2:139
+SMB / NTLMv2
+(NetBIOS-SSN)
+NTLM authentication negotiation initiated to Domain
+Controller WIN-FGG5B8C1BYF .
+2025-10-05
+08:00:00
+10.11.28.2:139
+10.11.28.101:49794
+SMB / NTLMv2
+NTLM challenge-response negotiation completed
+( ntlm.success: true ), exposing domain 
+mytallbeer.com .
+2025-10-05
+08:00:15
+10.11.28.101
+External C2
+TCP / 443, 2222
+Interactive C2 beaconing and long-lived sessions
+maintained across internal AD boundary.
+Attack Reconstruction
+In Phase 4, the adversary leveraged persistent access on internal workstation 10.11.28.101 to interact with internal network
+resources and establish long-lived external control sessions. During internal reconnaissance and service enumeration, the host
+performed NTLM authentication against the local Domain Controller at 10.11.28.2 over TCP port 139 (NetBIOS Session
+Service). The cryptographic challenge and NTLMSSP metadata captured by Zeek revealed the Domain Controller's NetBIOS
+hostname ( WIN-FGG5B8C1BYF ), the server DNS name ( WIN-FGG5B8C1BYF.mytallbeer.com ), and the canonical Active Directory
+tree/domain name ( mytallbeer.com ). This authentication confirms that the host operates within the mytallbeer.com AD tree,
+which the adversary can target for Kerberoasting, DCSync, or lateral delegation abuse.
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION
+Affected System
+IP Address
+Hostname
+User Account
+Operating System
+AD Domain
+System Role
+Status
+--- page 2 ---
+10.11.28.101
+Not
+Determined
+Not
+Determined
+Windows
+Workstation
+mytallbeer.com
+Workstation
+(Client)
+Confirmed
+Compromised
+Relevant Infrastructure
+Type
+Domain / IP Address
+Port
+Purpose / Observation
+Active Directory
+Domain
+mytallbeer.com
+N/A
+Enterprise Active Directory domain / tree
+infrastructure identified in NTLM metadata.
+Domain Controller
+WIN-FGG5B8C1BYF.mytallbeer.com /
+10.11.28.2
+139 (SMB/
+NetBIOS), 88, 389
+Primary Windows Domain Controller handling
+enterprise authentication and directory queries.
+Compromised
+Client Host
+10.11.28.101
+Dynamic (49794)
+Internal client workstation originating AD
+authentication requests and hosting external C2
+sessions.
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS
+4.1 Analyst Findings
+No.
+Finding / Objective
+Answer / Result
+Evidence Ref.
+1
+Active Directory Domain Name (P4-02)
+CTK{mytallbeer.com}
+E-01, E-02
+2
+Domain Controller IP & FQDN
+10.11.28.2 / WIN-FGG5B8C1BYF.mytallbeer.com
+E-01
+3
+Originating Workstation IP & Source Port
+10.11.28.101:49794
+E-01
+4
+Authentication Protocol & Success State
+NTLMv2 over SMB (Port 139) / ntlm.success: true
+E-01
+5
+Zeek Flow Log UID
+CqTa5LIS3GtnhOiFf
+E-01
+4.2 Malware / Tool Identification
+Malware / Tool / Technique
+Evidence
+Confidence
+Active Directory Domain Reconnaissance
+NTLMSSP challenge negotiation metadata captured in zeek.ntlm logs
+High
+Interactive Command & Control
+Long-lived sessions and anomalous outbound interactive traffic in Phase 4
+High
+Technical analysis: The adversary performed internal authentication probing or automated service discovery against the primary
+DC ( 10.11.28.2 ). Zeek parsed the binary NTLMSSP exchange over SMB/NetBIOS, extracting target information fields including
+Domain Name ( mytallbeer.com ), Server Name ( WIN-FGG5B8C1BYF ), and DNS Domain Name.
+4.3 Network Activity
+Time
+(UTC)
+Source IP
+Destination
+IP
+Port
+Protocol
+Domain / Host
+Observation
+08:00:00
+10.11.28.101
+10.11.28.2
+139
+SMB /
+NTLM
+WIN-
+FGG5B8C1BYF.mytallbeer.com
+Successful NTLM
+authentication to Domain
+Controller.
+08:00:15
+10.11.28.101
+External C2
+443 /
+2222
+TCP / TLS
+Various external C2 IPs
+Interactive shell and high-
+volume external sessions.
+4.4 Command-and-Control Activity
+C2 Domain / IP
+Port
+Protocol
+First Seen
+Observation
+Various Phase 4 External
+C2s
+443 /
+2222
+TCP /
+TLS
+2025-10-05
+08:00:15
+Long-lived interactive control sessions established from 
+10.11.28.101 .
+4.5 Files and Payloads
+Filename
+Source / URL
+Type
+Observation
+Not
+Determined
+Internal Network /
+Staged
+Interactive RAT
+Payload
+Payload facilitating interactive terminal control and internal AD
+querying.
+--- page 3 ---
+4.6 Credential Collection / Exfiltration
+Collection Method
+NTLM Challenge-Response Authentication over NetBIOS/SMB
+Information Collected
+Domain Controller FQDN, NetBIOS Computer Name, Active Directory Tree Name
+( mytallbeer.com )
+Exfiltration Method
+Interactive C2 control channel
+Destination
+External C2 Server
+Protocol / Port
+TCP / 443, 2222
+Assessment: The NTLM authentication flow demonstrates active identity validation inside the mytallbeer.com forest, creating
+opportunity for credential harvesting (LSASS dumping, token impersonation).
+4.7 Lateral Movement
+Observed Flow
+10.11.28.101:49794 → 10.11.28.2:139 (Domain Controller)
+Status
+Targeted / Authenticated (NTLM negotiation successful). Destination not confirmed
+compromised.
+4.8 Ransomware Activity
+Not Determined. No ransomware staging, encryption routines, or volume shadow copy deletion was detected during this
+authentication phase.
+4.9 Indicators of Compromise
+Indicator
+Type
+Purpose / Assessment
+Recommended Action
+mytallbeer.com
+Active Directory
+Domain
+Target Enterprise Domain
+Infrastructure
+Audit all domain trust relationships &
+Kerberos tickets
+WIN-
+FGG5B8C1BYF.mytallbeer.com
+Domain Controller
+FQDN
+Primary Windows Domain
+Controller
+Enable advanced auditing (Event IDs
+4624, 4672, 4768)
+10.11.28.2
+IPv4 (Internal)
+Domain Controller IP Address
+Restrict inbound SMB/RPC access to
+authorized subnets
+10.11.28.101
+IPv4 (Internal)
+Compromised Workstation
+Isolate host immediately and perform
+endpoint triage
+4.10 Investigation Evidence
+Query / Filter Used: ntlm.server.dns.name:* OR ntlm.server.nb.name:* OR ntlm.server.tree.name:* OR
+kerberos.realm:*
+Finding: Security Onion Hunt query parsed Zeek NTLM event data revealing ntlm.server.tree.name as mytallbeer.com
+and ntlm.server.dns.name as WIN-FGG5B8C1BYF.mytallbeer.com .
+Zeek Logs / Detections Used: zeek.ntlm , zeek.conn , zeek.smb_mapping , zeek.kerberos .
+4.11 Evidence Register
+Evidence
+No.
+Description
+Source
+E-01
+Security Onion Hunt table displaying NTLM authentication metadata
+and domain fields.
+Security Onion Hunt
+( 01_ad_domain_ntlm_metadata.png )
+E-02
+CyberEx challenge portal confirmation validating flag 
+CTK{mytallbeer.com} conquered (997 pts).
+CyberEx CTFd ( 02_challenge_conquered.png )
+4.12 MITRE ATT&CK Mapping
+Tactic
+Technique
+Technique ID
+Evidence
+Discovery
+Domain Trust / Account Discovery
+--- page 4 ---
+T1482 /
+T1087.002
+NTLM negotiation revealing domain 
+mytallbeer.com .
+Lateral Movement
+Use Alternate Authentication Material
+T1550.002
+NTLM authentication request to DC 10.11.28.2 .
+Command and
+Control
+Non-Standard Port / Protocol
+Tunneling
+T1571 / T1572
+Interactive sessions on external ports (e.g. TCP
+2222).
+5. CONTAINMENT, ERADICATION AND RECOVERY
+Immediate Actions
+Isolate host 10.11.28.101 from the corporate LAN to sever active interactive C2 sessions and prevent DC lateral
+exploitation.
+Review Active Directory Domain Controller ( 10.11.28.2 ) security event logs (Events 4624, 4625, 4776) for anomalous
+authentication tickets and privilege escalation attempts.
+Reset passwords for any user or service accounts that authenticated from 10.11.28.101 within the mytallbeer.com
+domain.
+Additional Recommendations
+Active Directory / Domain Security: Restrict NTLM usage across the domain and enforce Kerberos with AES encryption.
+Restrict SMB (ports 139/445) inbound to Domain Controllers strictly to managed management bastions.
+Network: Block external interactive communication on non-standard ports (such as TCP 2222) at perimeter firewalls.
+Endpoint: Perform forensic triage on 10.11.28.101 for memory-resident backdoors, interactive shells, and scheduled tasks.
+Recovery: Ensure Domain Controller integrity before re-introducing sanitized systems to the mytallbeer.com domain.
+6. CONCLUSION
+In Phase 4, the adversary maintained active interactive control on host 10.11.28.101 and engaged with internal infrastructure.
+Analysis of Zeek NTLM authentication metadata captured the complete domain hierarchy, conclusively identifying the enterprise
+Active Directory domain as mytallbeer.com hosted on Domain Controller WIN-FGG5B8C1BYF ( 10.11.28.2 ). The submission 
+CTK{mytallbeer.com} was validated as correct on the CyberEx assessment platform.
+7. EVIDENCE LIMITATIONS
+Specific domain user account names used in the NTLM challenge were masked or not explicitly populated in the single parsed
+NTLM summary record.
+Endpoint event logs from the Domain Controller are required to verify whether ticket-granting or privilege abuse occurred post-
+authentication.
+8. APPENDICES
+Appendix A - Investigation Queries
+ntlm.server.dns.name:* OR ntlm.server.nb.name:* OR ntlm.server.tree.name:* OR kerberos.realm:*
+source.ip:"10.11.28.101" AND destination.ip:"10.11.28.2"
+destination.port:139 OR destination.port:445 | groupby ntlm.server.tree.name
+1. 
+2. 
+3. 
+• 
+• 
+• 
+• 
+• 
+• 
+--- page 5 ---
+Appendix B - Figures and Screenshots
+Figure 1: Security Onion Hunt displaying NTLM authentication from 10.11.28.101 to DC 10.11.28.2, confirming domain mytallbeer.com and DC WIN-
+FGG5B8C1BYF.mytallbeer.com.
+Figure 2: CyberEx portal validation confirming OFA P4-02 Active Directory Domain solved with flag CTK{mytallbeer.com} for 997 points.

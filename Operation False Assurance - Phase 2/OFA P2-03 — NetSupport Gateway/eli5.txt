@@ -1,0 +1,15 @@
+What we were looking for:
+- What website name pointed to the bad "remote control" computer (like someone secretly controlling your mouse and keyboard from far away).
+- Its address and the door number (port) used.
+
+What we found:
+- The website was westford-systems.icu.
+- Its address was 38.146.28.242, using door number 1203.
+
+How we found it:
+- We searched for who asked for the address 38.146.28.242 in the phone book, and found the name westford-systems.icu.
+- Soon after, the sick computer started sending "check-in" messages to that exact address on door 1203.
+- The alarm system flagged those check-ins 48 times as a known remote-control tool named NetSupport.
+
+Answer:
+CTK{westford-systems.icu|38.146.28.242|1203}

@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+What URI delivered the large archive? Provide the recorded filename and response body size.
+
+Submit exactly in this format: CTK{URI|FILENAME|BYTES} Use exact capitalization.

@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Which client and server IP addresses communicated over SMB/TCP 445 during this phase?
+
+Submit exactly in this format: CTK{CLIENT_IP|SERVER_IP|PORT} Use exact capitalization.

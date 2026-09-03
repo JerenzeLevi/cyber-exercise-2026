@@ -1,0 +1,13 @@
+What we were looking for:
+- What kind of data label (Content-Type), how many stolen-data messages, and how big the biggest one was, sent to the password-stealer's address.
+
+What we found:
+- Not solved yet. We are fairly sure there were 22 messages and the biggest was 466,352 bytes (a chunk of data size), but we couldn't figure out the right data-label word, so we left this one blank on purpose.
+
+How we found it:
+- We counted all the stolen-data messages sent to the bad address: 22.
+- We found the single biggest one: 466,352 bytes.
+- We tried a couple of guesses for the data-label word (like "text/plain"), but all were rejected, and we were told not to keep guessing.
+
+Answer:
+Not solved yet - count (22) and size (466352) look right, but the data-label word is unconfirmed.

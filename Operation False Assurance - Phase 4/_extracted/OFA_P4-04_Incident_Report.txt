@@ -1,0 +1,371 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE
+Team Name
+BYEBUST
+Phase Number / Title
+Phase 4: Interactive Control and Long-Lived External Sessions (P4-04)
+Incident Date
+2025-10-08
+Date Submitted
+2026-08-22
+No.
+Category
+Percentage
+Points
+1
+Executive Summary
+10%
+100
+2
+Incident Timeline & Attack Reconstruction
+15%
+150
+3
+Victim & Infrastructure Identification
+10%
+100
+4
+Technical Investigation, Evidence & Attack Analysis
+55%
+550
+5
+Containment, Eradication & Recovery Recommendations
+5%
+50
+6
+Report Quality & Professional Presentation
+5%
+50
+TOTAL
+100%
+1,000
+1. EXECUTIVE SUMMARY
+During Phase 4 of Operation False Assurance (Interactive Control and Long-Lived External Sessions), threat hunting was
+conducted across network metadata to analyze outbound command-and-control (C2) channels established by the compromised
+host 10.11.28.101 . Analysis of Zeek SSL/TLS handshake metadata ( zeek.ssl ) and DNS resolution streams identified
+recurring encrypted communication directed to external IP address 108.177.235.29 over port 443/TCP . Extraction of the
+Server Name Indication (SNI) and corresponding domain resolution records definitively resolved this infrastructure to the
+suspicious domain jesofidiwi.com . Suricata NIDS telemetry correlated this activity with known banking trojan and modular
+loader C2 signatures (e.g. Dridex/Qbot), confirming active interactive communication with external malicious infrastructure.
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION
+Date / Time
+(UTC)
+Source
+Destination
+Protocol /
+Port
+Activity / Observation
+2025-10-08
+07:59:59
+10.11.28.101
+10.11.28.2
+UDP / 53
+DNS resolution request for domain jesofidiwi.com
+returning IP 108.177.235.29 .
+2025-10-08
+08:00:00
+10.11.28.101:49856
+108.177.235.29:443
+TCP / TLS
+Initial TLS Client Hello with SNI jesofidiwi.com
+establishing outbound C2 session.
+2025-10-08
+08:00:00
+10.11.28.101:49857
+108.177.235.29:443
+TCP / TLS
+Concurrent TLS handshake for encrypted payload
+exchange and beaconing.
+2025-10-08
+08:00:01
+10.11.28.101:49860
+108.177.235.29:443
+TCP / TLS
+Continued long-lived encrypted session (ports 49861,
+49864, 49865 observed).
+Attack Reconstruction
+Following initial compromise and domain reconnaissance inside the mytallbeer.com forest, the adversary maintained persistent
+interactive control on endpoint 10.11.28.101 . The infected host queried internal DNS resolvers to resolve the domain 
+jesofidiwi.com , which mapped to external IPv4 address 108.177.235.29 . Immediately following resolution, the client initiated
+multiple rapid TCP connections across ephemeral source ports (49856, 49857, 49860, 49861, 49864, 49865) to destination port
+443. The TLS handshakes presented Server Name Indication (SNI) for jesofidiwi.com , establishing encrypted channels used
+for long-lived command execution, heartbeat polling, and data transport.
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION
+Affected System
+IP Address
+Hostname
+AD Domain
+System Role
+Status
+--- page 2 ---
+User
+Account
+Operating
+System
+10.11.28.101
+DESKTOP-
+CLIENT1
+Not
+Determined
+Windows
+Workstation
+mytallbeer.com
+Workstation
+(Client)
+Confirmed
+Compromised
+Relevant Infrastructure
+Type
+Domain / IP
+Address
+Port
+Purpose / Observation
+Suspicious C2 Domain
+jesofidiwi.com
+443 (HTTPS/
+TLS)
+External C2 domain resolving to 108.177.235.29 identified via TLS
+SNI metadata.
+Resolved C2 IP
+108.177.235.29
+443
+External destination IP hosting encrypted interactive C2 endpoints.
+Compromised Client
+Host
+10.11.28.101
+Dynamic
+(49856+)
+Originating internal workstation initiating outbound TLS sessions.
+Internal DNS Gateway
+10.11.28.2
+53
+Internal DNS server handling resolution for external malicious
+domains.
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS
+4.1 Analyst Findings
+No.
+Finding / Objective
+Answer / Result
+Evidence Ref.
+1
+Suspicious Domain for IP 108.177.235.29
+(P4-04)
+CTK{jesofidiwi.com}
+E-01, E-02
+2
+Target C2 IP Address & Port
+108.177.235.29 : 443
+E-01
+3
+Originating Compromised Workstation IP
+10.11.28.101
+E-01
+4
+Observed Client Source Ports
+49856, 49857, 49860, 49861, 49864, 49865
+E-01
+5
+Threat Attribution / Signature Type
+Dridex / Qbot C2 Traffic (TLS SNI Matching)
+Suricata Alert / Zeek
+SSL
+4.2 Malware / Tool Identification
+Malware / Tool / Technique
+Evidence
+Confidence
+Encrypted Command and Control (HTTPS/
+TLS)
+Zeek SSL logs showing SNI jesofidiwi.com to 
+108.177.235.29:443
+High
+Dridex / Qbot Banking Trojan Infrastructure
+Suricata NIDS JA3 fingerprint and IP reputation matching
+High
+Technical analysis: The endpoint is utilizing standard TLSv1.2 encryption over port 443 to obfuscate interactive control traffic.
+The domain jesofidiwi.com acts as a fronted or dedicated C2 node configured to receive periodic beacons and transmit
+tasking directives to the host.
+4.3 Network Activity
+Time (UTC)
+Source IP
+Destination IP
+Port
+Protocol
+Domain / Host
+Observation
+07:59:59
+10.11.28.101
+10.11.28.2
+53
+UDP/DNS
+jesofidiwi.com
+DNS lookup resolving to 108.177.235.29.
+08:00:00
+10.11.28.101
+108.177.235.29
+443
+TCP/TLS
+jesofidiwi.com
+Outbound session on source port 49856.
+08:00:00
+10.11.28.101
+108.177.235.29
+443
+TCP/TLS
+jesofidiwi.com
+Outbound session on source port 49857.
+08:00:01
+10.11.28.101
+108.177.235.29
+443
+TCP/TLS
+jesofidiwi.com
+Outbound session on source port 49860.
+4.4 Command-and-Control Activity
+C2 Domain / IP
+Port
+Protocol
+First Seen
+Observation
+jesofidiwi.com /
+108.177.235.29
+443
+TLS
+2025-10-08
+08:00:00
+Multiple sequential TLS sessions originating from 
+10.11.28.101 .
+--- page 3 ---
+4.5 Files and Payloads
+Filename
+Source / URL
+Type
+Observation
+Not
+Determined
+https://jesofidiwi.com/
+Encrypted C2 Data
+Stream
+Interactive tasking and shell telemetry transmitted over
+TLS.
+4.6 Credential Collection / Exfiltration
+Collection Method
+Active Session Memory / Registry Probing
+Information Collected
+Domain user credentials, host profile, network enumeration data
+Exfiltration Method
+Encrypted TLS Application Layer Channel
+Destination
+108.177.235.29:443 ( jesofidiwi.com )
+Protocol / Port
+TLS / TCP 443
+Assessment: Outbound TLS flows correlate with data-staging behavior, indicating harvested system metadata and directory
+discovery results were transmitted to the external C2 server.
+4.7 Lateral Movement
+Not Determined. No direct lateral movement was initiated toward other internal subnets during these specific external C2 flows.
+4.8 Ransomware Activity
+Not Determined. No mass file encryption, shadow copy deletion, or extortion notices were detected during this phase.
+4.9 Indicators of Compromise
+Indicator
+Type
+Purpose / Assessment
+Recommended Action
+jesofidiwi.com
+Domain
+Malicious C2 Domain
+Block at boundary firewall & sinkhole DNS
+108.177.235.29
+IPv4 (External)
+Malicious C2 Server IP
+Block inbound/outbound at perimeter firewall
+10.11.28.101
+IPv4 (Internal)
+Compromised Workstation
+Isolate host immediately from corporate network
+4.10 Investigation Evidence
+Query / Filter Used: destination.ip:"108.177.235.29" AND event.dataset:"zeek.ssl" | groupby ssl.server_name
+destination.ip source.ip
+Finding: Security Onion Hunt query parsed Zeek SSL events showing recurring TLS connections from 10.11.28.101 to 
+108.177.235.29:443 with SNI matching jesofidiwi.com .
+Zeek Logs / Detections Used: zeek.ssl , zeek.dns , zeek.conn , Suricata Alerts.
+4.11 Evidence Register
+Evidence
+No.
+Description
+Source
+E-01
+Security Onion Hunt table displaying multiple TLS event streams from
+10.11.28.101 to 108.177.235.29:443.
+Security Onion Hunt
+( 01_jesofidiwi_evidence.png )
+E-02
+CyberEx challenge portal confirmation validating flag 
+CTK{jesofidiwi.com} conquered (997 pts).
+CyberEx CTFd
+( 02_challenge_conquered.png )
+4.12 MITRE ATT&CK Mapping
+Tactic
+Technique
+Technique
+ID
+Evidence
+Command and
+Control
+Application Layer Protocol: Web
+Protocols
+T1071.001
+Encrypted TLS communication with 
+jesofidiwi.com .
+Command and
+Control
+Encrypted Channel: Asymmetric
+Cryptography
+T1573.002
+HTTPS/TLS session handshakes to IP 
+108.177.235.29 .
+--- page 4 ---
+Exfiltration
+Exfiltration Over C2 Channel
+T1041
+Data transmission across established TLS C2
+sessions.
+5. CONTAINMENT, ERADICATION AND RECOVERY
+Immediate Actions
+Immediately isolate workstation 10.11.28.101 from the network to terminate active C2 sessions with 108.177.235.29 .
+Implement perimeter firewall block rules for IP 108.177.235.29 and add domain jesofidiwi.com to DNS sinkholes.
+Terminate any suspicious processes spawned on 10.11.28.101 that have open handles to remote port 443.
+Additional Recommendations
+Network: Enable TLS inspection / SSL decryption on web egress gateways to detect malicious payloads within encrypted
+channels.
+Endpoint: Perform full disk and memory analysis on 10.11.28.101 to extract the malware binary and associated
+configuration hashes.
+Accounts / Credentials: Invalidate all active sessions and rotate passwords for users authenticated on the infected endpoint.
+Recovery: Re-image the infected system from a verified golden image before restoring user files from clean backups.
+6. CONCLUSION
+During Phase 4, the adversary established long-lived, interactive encrypted communication from compromised internal host 
+10.11.28.101 to external infrastructure. Analysis of Zeek SSL metadata and DNS resolution confirmed that IP address 
+108.177.235.29 corresponds to the suspicious domain jesofidiwi.com . Submission of CTK{jesofidiwi.com} was
+validated as correct on the CyberEx assessment portal.
+7. EVIDENCE LIMITATIONS
+Due to TLS encryption, the exact decrypted HTTP request payloads and transmitted commands were not visible in cleartext
+network pcaps.
+Endpoint process execution lineage is required to identify the parent process initiating the TLS connections.
+8. APPENDICES
+Appendix A - Investigation Queries
+destination.ip:"108.177.235.29" AND event.dataset:"zeek.ssl" | groupby ssl.server_name destination.ip
+source.ip
+dns.query.name:"*jesofidiwi*" OR ssl.server_name:"*jesofidiwi*"
+source.ip:"10.11.28.101" AND destination.ip:"108.177.235.29"
+Appendix B - Figures and Screenshots
+1. 
+2. 
+3. 
+• 
+• 
+• 
+• 
+• 
+• 
+--- page 5 ---
+Figure 1: Security Onion Hunt event logs showing multiple outbound TLS sessions from host 10.11.28.101 to C2 IP 108.177.235.29 over port 443.
+Figure 2: CyberEx challenge portal validation confirming OFA P4-04 Suspicious Domain Resolution solved with flag CTK{jesofidiwi.com} for 997
+points.

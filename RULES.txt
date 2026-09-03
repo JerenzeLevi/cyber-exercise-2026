@@ -1,0 +1,21 @@
+For Operation False Assurance the logs will be seen at Cyber Operation Center
+
+Uploaded file are your credentials its up to you if you want to change the password.
+
+DONT ACCESS OTHER TEAMS ACCOUNT.
+
+HONESTY IS THE BEST POLICY
+
+PS: If you changed your password wait 15 minutes for it to sync with the system. (RESETTING OF ACCOUNTS = 10 points) so remember your password when you changed it.
+
+Scenario Background
+
+A regional financial organization has reported a series of suspicious network events affecting several systems across its enterprise environment.
+
+The first indication of compromise occurred on October 2025, when an employee encountered an unusual verification page while browsing the Internet. What initially appeared to be an isolated web event was followed by increasingly suspicious activity over the next two weeks.
+
+Security monitoring later identified evidence of unauthorized downloads, external command-and-control communication, credential and information theft, remote access activity, internal network movement, and compromise of critical infrastructure.
+
+The incident escalated into a ransomware outbreak affecting multiple Windows systems.
+
+The Security Operations Center has recovered network evidence from six stages of the intrusion. Your team has been assigned to reconstruct the attack, identify the affected systems and malicious infrastructure, determine how the attacker progressed through the environment, and provide appropriate containment and recovery recommendations.

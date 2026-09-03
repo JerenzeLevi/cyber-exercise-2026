@@ -1,0 +1,15 @@
+Adjusted Query Suggestions
+Try running these alternate versions in the search bar after changing the time filter to All Time:
+
+Standard / Wildcard Field Query:
+
+Code snippet
+http.method: "POST" AND destination.port: 443
+Zeek Dataset Specific:
+
+Code snippet
+event.dataset: "http" AND destination.port: 443 AND (http.method: "POST" OR http.request.method: "POST")
+Broad Cleartext Port 443 Search (if HTTP fields aren't indexed):
+
+Code snippet
+destination.port: 443 AND event.dataset: "http"

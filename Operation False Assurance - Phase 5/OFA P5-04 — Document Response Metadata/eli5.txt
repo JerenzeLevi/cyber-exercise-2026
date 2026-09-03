@@ -1,0 +1,12 @@
+What we were looking for:
+- The saved file name and file type of the bad document from OFA P5-03.
+
+What we found:
+- The file was named transcript-June152018-017188/2.doc, and its type was application/msword (a Word document).
+
+How we found it:
+- We opened the detailed record for that document download.
+- It listed the exact filename it was saved as, and the label describing what kind of file it is.
+
+Answer:
+CTK{transcript-June152018-017188/2.doc|application/msword}

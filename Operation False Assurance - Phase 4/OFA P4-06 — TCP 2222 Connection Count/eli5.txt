@@ -1,0 +1,13 @@
+What we were looking for:
+- How many separate times the sick computer connected to the bad address on the weird door number (2222).
+
+What we found:
+- There were 41 separate connections.
+
+How we found it:
+- We grouped up all the connection records going to that address and door number.
+- We counted 41 distinct connections.
+- The alarm log also had exactly 41 matching warnings, one for each connection, proving the count was right.
+
+Answer:
+CTK{41}

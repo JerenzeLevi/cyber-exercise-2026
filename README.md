@@ -140,7 +140,7 @@ Official pubmats announcing Team BYEBUST's national-level championship at RESCOM
 </td>
 </tr>
 <tr>
-<td align="center" colspan="2">
+<td align="center" width="50%">
 
 **⚡ BYTE Organization**
 
@@ -149,6 +149,17 @@ Official pubmats announcing Team BYEBUST's national-level championship at RESCOM
 </a>
 
 🔗 [View original post](https://www.facebook.com/byteorganization/posts/pfbid035aSUeu4PicCwveR292hZrxJhayVjLRUuT4xphYajgMquB3DdfqrXhvKAgSqPF2Mxl)
+
+</td>
+<td align="center" width="50%">
+
+**🎖️ Reserve Command, Philippine Army**
+
+<a href="https://www.facebook.com/100051918171873/posts/1641830027557587/">
+<img src="./pubmat/Philippine-army.jpg" width="380" alt="Reserve Command, Philippine Army pubmat"/>
+</a>
+
+🔗 [View original post](https://www.facebook.com/100051918171873/posts/1641830027557587/)
 
 </td>
 </tr>

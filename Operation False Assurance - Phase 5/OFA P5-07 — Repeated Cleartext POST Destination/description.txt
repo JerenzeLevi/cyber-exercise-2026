@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+Which destination IP received repeated cleartext HTTP POSTs on TCP 443, and how many POST transactions were indexed?
+
+Submit exactly in this format: CTK{IP|COUNT} Use exact capitalization.
+
+View Hint
+Filter HTTP POSTs to destination.port:443 and count transactions.

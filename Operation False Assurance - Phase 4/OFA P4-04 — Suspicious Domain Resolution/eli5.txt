@@ -1,0 +1,13 @@
+What we were looking for:
+- A strange website name pointing to one of the bad guys' addresses.
+
+What we found:
+- The website was jesofidiwi.com.
+
+How we found it:
+- We saw the sick computer talking secretly (encrypted) to an outside address again and again.
+- We looked at the secure-connection details, which include the website name being connected to, and it matched a phone-book lookup for that address.
+- The alarm log also linked this traffic to known bad banking-virus programs.
+
+Answer:
+CTK{jesofidiwi.com}

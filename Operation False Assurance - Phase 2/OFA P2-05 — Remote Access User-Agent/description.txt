@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 2: Remote Access and Information-Stealer Traffic
+
+What User-Agent identified the remote-access software?
+
+Submit exactly in this format: CTK{USER_AGENT} Use exact capitalization.
+
+View Hint
+Inspect the HTTP User-Agent field.

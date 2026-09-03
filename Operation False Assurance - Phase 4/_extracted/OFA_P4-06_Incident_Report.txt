@@ -1,0 +1,347 @@
+--- page 1 ---
+OPERATION FALSE ASSURANCE
+Team Name
+BYEBUST
+Phase Number / Title
+Phase 4: Interactive Control and Long-Lived External Sessions (P4-06)
+Incident Date
+2025-10-08
+Date Submitted
+2026-08-22
+No.
+Category
+Percentage
+Points
+1
+Executive Summary
+10%
+100
+2
+Incident Timeline & Attack Reconstruction
+15%
+150
+3
+Victim & Infrastructure Identification
+10%
+100
+4
+Technical Investigation, Evidence & Attack Analysis
+55%
+550
+5
+Containment, Eradication & Recovery Recommendations
+5%
+50
+6
+Report Quality & Professional Presentation
+5%
+50
+TOTAL
+100%
+1,000
+1. EXECUTIVE SUMMARY
+During Phase 4 of Operation False Assurance (Interactive Control and Long-Lived External Sessions), forensic network session
+aggregation was performed within Security Onion Hunt to quantify the exact volume of distinct outbound TCP connection streams
+established to external command-and-control server 86.159.48.25:2222 . Utilizing the hunting aggregation query
+destination.ip:"86.159.48.25" AND destination.port:2222 | groupby event.dataset network.transport , the
+forensic analysis confirmed exactly 41 distinct TCP connection sessions recorded in the zeek.conn dataset. Each individual
+connection was mirrored by a corresponding Suricata NIDS alert (41 total alerts) for Dridex JA3 hash beaconing, demonstrating a
+consistent, automated heartbeat cadence across the interactive C2 lifecycle.
+2. INCIDENT TIMELINE AND ATTACK RECONSTRUCTION
+Date / Time (UTC)
+Source
+Destination
+Protocol / Port
+Activity / Observation
+2025-10-08 09:27:17
+10.11.28.101
+86.159.48.25:2222
+TCP / TLS
+Initial connection session (#1
+of 41) established to external
+C2 node.
+2025-10-08 18:18:00
+10.11.28.101:49974
+86.159.48.25:2222
+TCP / TLS
+Mid-phase beacon session
+(#33 of 41); connection state 
+SF logged in Zeek.
+2025-10-08 18:28:35
+10.11.28.101:50009
+86.159.48.25:2222
+TCP / TLS
+Automated beacon cycle (#36
+of 41); 3-minute interval
+maintained.
+2025-10-08 18:38:11
+10.11.28.101:50124
+86.159.48.25:2222
+TCP / TLS
+Pre-final beacon session (#40
+of 41); flow UID 
+CH1fzQ3KFWT1UnGU9 .
+2025-10-08 18:41:20
+10.11.28.101:50127
+86.159.48.25:2222
+TCP / TLS
+Final connection session (#41
+of 41); flow UID 
+CvghJ14KzEayP8ZNWg .
+Attack Reconstruction
+Throughout the duration of the compromised session, the malware implanted on workstation 10.11.28.101 repeatedly
+established distinct TCP connections to 86.159.48.25:2222 . Analysis of the Zeek connection dataset ( zeek.conn ) revealed
+that each interaction opened a discrete, ephemeral local socket (ports 49974 through 50127) to initiate a full TCP handshake,
+negotiate a TLSv1.2 encrypted tunnel, exchange telemetry/commands, and gracefully terminate with a connection state of SF
+(SYN/FIN normal close). The cumulative volume of these distinct TCP connection handshakes totaled exactly 41 sessions,
+Operation False Assurance — Incident Report P4-06
+Page 1 of 5
+--- page 2 ---
+producing an identical tally of 41 Suricata NIDS alerts and 41 Zeek SSL handshakes (124 aggregate events across all index types
+including 1 notice and 1 SSL event).
+3. VICTIM AND INFRASTRUCTURE IDENTIFICATION
+Affected Host
+IP Address
+Hostname
+User
+Account
+Operating
+System
+AD Domain
+System
+Role
+Status
+10.11.28.101
+DESKTOP-
+CLIENT1
+Not
+Determined
+Windows
+Workstation
+mytallbeer.com
+Client
+Endpoint
+Active C2 Source (41
+Sessions)
+Threat Infrastructure
+Type
+Domain / IP
+Address
+Port
+Purpose / Observation
+External C2 Server
+86.159.48.25
+2222 (TCP)
+Adversary C2 node receiving 41 distinct TCP connection sessions.
+Compromised
+Endpoint
+10.11.28.101
+Dynamic (49974–
+50127)
+Internal victim host originating all 41 TCP/TLS connection streams.
+Internal Domain
+Controller
+10.11.28.2
+53, 88, 139, 389,
+445
+Active Directory DC (`WIN-FGG5B8C1BYF`) targeted by client
+during reconnaissance.
+4. TECHNICAL INVESTIGATION, EVIDENCE AND ATTACK ANALYSIS
+4.1 Analyst Findings
+No.
+Finding / Objective
+Answer / Result
+Evidence Ref.
+1
+Distinct TCP Connection Count (P4-06)
+CTK{41} (41 distinct connections)
+E-01, E-02
+2
+Target C2 IP & Port
+86.159.48.25:2222
+E-01, E-03
+3
+Primary Connection Log Source
+zeek.conn (Count: 41)
+E-01
+4
+NIDS Detection Correlation
+suricata.alert (Count: 41)
+E-01, E-03
+5
+Zeek Connection State
+SF (Normal SYN/FIN termination)
+E-03
+4.2 Dataset Event Breakdown
+Event Dataset
+Transport Protocol
+Count
+Analytical Description
+zeek.conn
+TCP
+41
+Total distinct, established TCP socket connection flows.
+suricata.alert
+TCP
+41
+Signature matches for Dridex JA3 hash (1 alert per connection flow).
+zeek.ssl
+TCP
+41
+Successful TLS cryptographic handshakes completed on port 2222.
+zeek.notice
+TCP
+1
+Zeek policy notice triggered during external communication.
+Total Indexed Events:
+124 events (41 distinct TCP connection sessions)
+4.3 Session Telemetry and Sample UIDs
+Session UID
+Source Socket
+Destination Socket
+Duration
+State
+Service
+CQD5slj5anUAsSGF2
+10.11.28.101:50004
+86.159.48.25:2222
+2.14s
+SF
+ssl / tls
+CQxeal1qTFUlDgPy1c
+10.11.28.101:50009
+86.159.48.25:2222
+1.98s
+SF
+ssl / tls
+Cfoe9tEq9LGC1zvr6
+10.11.28.101:50110
+86.159.48.25:2222
+2.05s
+SF
+ssl / tls
+CH1fzQ3KFWT1UnGU9
+10.11.28.101:50124
+86.159.48.25:2222
+2.11s
+SF
+ssl / tls
+CvghJ14KzEayP8ZNWg
+10.11.28.101:50127
+86.159.48.25:2222
+2.08s
+SF
+ssl / tls
+Operation False Assurance — Incident Report P4-06
+Page 2 of 5
+--- page 3 ---
+4.4 Command-and-Control Analysis
+The 41 distinct TCP connections followed a highly structured heartbeat distribution. Rather than maintaining a single monolithic
+TCP socket, the malware engineered persistent control via sequential short-lived sessions connecting every ~180 seconds (3
+minutes). This architectural pattern reduces network footprint anomalies associated with long-lived idle sessions while preserving
+interactive responsiveness.
+4.5 Indicators of Compromise
+Indicator
+Type
+Purpose / Assessment
+Recommended Action
+86.159.48.25
+IPv4 (External)
+Malicious C2 Endpoint (Port 2222)
+Block all outbound traffic at firewall
+10.11.28.101
+IPv4 (Internal)
+Infected Workstation
+Isolate host from network; initiate remediation
+TCP 2222
+Network Port
+Non-Standard C2 Port
+Enforce strict egress filtering
+4.6 Evidence Register
+Evidence
+No.
+Description
+Source
+E-01
+Security Onion Hunt group metrics displaying exactly 41 
+zeek.conn and 41 suricata.alert events.
+Security Onion Hunt
+( 01_tcp_2222_connection_count_41.png )
+E-02
+CyberEx challenge portal confirmation validating flag 
+CTK{41} conquered (997 pts).
+CyberEx CTFd ( 02challenged_solved.jpg )
+E-03
+Security Onion Hunt events table showing individual Zeek
+connection and SSL records.
+Security Onion Hunt
+( 03_zeek_conn_session_details.png )
+4.7 MITRE ATT&CK Mapping
+Tactic
+Technique
+Technique
+ID
+Evidence
+Command and
+Control
+Non-Standard Port
+T1571
+41 distinct outbound connections on TCP port 2222.
+Command and
+Control
+Encrypted Channel: Asymmetric
+Cryptography
+T1573.002
+TLSv1.2 encryption utilized across all 41 connection
+sessions.
+Command and
+Control
+Web Protocols: Periodic Beaconing
+T1071.001
+Automated ~3-minute connection polling cadence.
+5. CONTAINMENT, ERADICATION AND RECOVERY
+Immediate Actions
+Isolate compromised host 10.11.28.101 to sever the 41-session recurring C2 loop with 86.159.48.25 .
+Deploy border firewall rules dropping all outbound connections targeting 86.159.48.25 on all ports.
+Audit Active Directory authentication logs during the time window of the 41 connections to identify any lateral movement
+attempts.
+Additional Recommendations
+Egress Filtering: Implement a default-deny egress policy restricting internal endpoints from directly communicating over non-
+standard ports such as TCP 2222.
+Host Re-imaging: Perform a forensic disk/memory capture on 10.11.28.101 followed by a clean wipe and operating
+system reinstallation.
+Signature Tuning: Ensure JA3 hash fingerprint alerting (e.g., Dridex signatures) is configured to trigger automated blocking
+on perimeter network security appliances.
+6. CONCLUSION
+Forensic analysis of the Phase 4 PCAP dataset confirmed that compromised internal host 10.11.28.101 initiated exactly 41
+distinct TCP connections to external destination IP 86.159.48.25 on port 2222/TCP . Each session completed a successful
+1. 
+2. 
+3. 
+• 
+• 
+• 
+Operation False Assurance — Incident Report P4-06
+Page 3 of 5
+--- page 4 ---
+TLS handshake, triggering 41 corresponding Suricata NIDS alerts for Dridex JA3 beaconing. Submission of flag CTK{41} was
+successfully verified and conquered on the CyberEx assessment portal.
+7. EVIDENCE LIMITATIONS
+TLS encryption prevented inspection of inner HTTP/binary payloads within each of the 41 connection streams.
+Host-based endpoint telemetry (EDR/Sysmon) is required to determine the specific binary/process PID initiating the 41
+outbound sockets.
+8. APPENDICES
+Appendix A - Investigation Queries
+destination.ip:"86.159.48.25" AND destination.port:2222 | groupby event.dataset network.transport
+destination.ip:"86.159.48.25" AND destination.port:2222 AND event.dataset:"zeek.conn"
+Appendix B - Figures and Screenshots
+Figure 1: Security Onion Hunt aggregation query displaying exactly 41 zeek.conn and 41 suricata.alert events for destination 86.159.48.25:2222.
+• 
+• 
+Operation False Assurance — Incident Report P4-06
+Page 4 of 5
+--- page 5 ---
+Figure 2: CyberEx challenge portal validation confirming OFA P4-06 TCP 2222 Connection Count solved with flag CTK{41} for 997 points.
+Figure 3: Security Onion Hunt event telemetry showing individual Zeek connection, SSL, and Suricata alert records.
+Operation False Assurance — Incident Report P4-06
+Page 5 of 5

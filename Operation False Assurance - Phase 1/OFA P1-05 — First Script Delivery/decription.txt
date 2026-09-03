@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+What URI delivered the first script, and what filename was recorded for the response?
+
+Submit exactly in this format: CTK{URI|FILENAME} Use exact capitalization.

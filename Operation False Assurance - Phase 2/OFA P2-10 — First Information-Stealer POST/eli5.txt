@@ -1,0 +1,13 @@
+What we were looking for:
+- The exact time of the very first stolen-data message sent to the password-stealer's address.
+
+What we found:
+- The first message was sent at 2025-10-03 10:02:45 (world clock time, called UTC).
+
+How we found it:
+- We listed every stolen-data message sent to the bad address, sorted so the oldest is first.
+- We looked at the very first one and read its timestamp.
+- We double-checked with the alarm log, which also flagged suspicious messages at that same moment.
+
+Answer:
+CTK{2025-10-03 10:02:45 UTC}

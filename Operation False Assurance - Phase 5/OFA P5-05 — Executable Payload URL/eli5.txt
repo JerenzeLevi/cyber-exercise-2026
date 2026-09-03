@@ -1,0 +1,13 @@
+What we were looking for:
+- The web address that gave the victim's computer the second, more dangerous program (an executable — a file you can run).
+
+What we found:
+- The address was http://www.ownhive.com/MsWM2B0/
+
+How we found it:
+- Right after the bad document loaded, we looked for the next download.
+- We found a program download from a different website.
+- We recorded its full web address as the answer (even though the question also asked about file details, those go in the next challenge).
+
+Answer:
+CTK{http://www.ownhive.com/MsWM2B0/}

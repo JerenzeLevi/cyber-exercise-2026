@@ -1,0 +1,13 @@
+What we were looking for:
+- The name of the company's computer network "family" (called an Active Directory domain — it's how office computers share one login system).
+
+What we found:
+- The network family was named mytallbeer.com.
+
+How we found it:
+- We looked at the login-handshake traffic between the taken-over computer and the company's main login server.
+- That handshake had to reveal the full network family name to work properly.
+- The name showed up clearly: mytallbeer.com.
+
+Answer:
+CTK{mytallbeer.com}

@@ -1,0 +1,10 @@
+P2-01 [ACCEPTED] CTK{10.8.20.101|10.8.20.1}
+P2-02 [ACCEPTED] CTK{dieselfilters.com|209.59.180.92|islonline.org|23.23.49.179|woop-bicks.com|172.86.90.13|cf-2-up.com|45.61.150.28}
+P2-03 [ACCEPTED] CTK{westford-systems.icu|38.146.28.242|1203}
+P2-04 [ACCEPTED] CTK{POST|http://38.146.28.242/fakeurl.htm}
+P2-05 [ACCEPTED] CTK{NetSupport Manager/1.3}
+P2-06 [CLOSED] unresolved - all attempts rejected (CTK{48}, CTK{3}, CTK{49}, CTK{96}, CTK{149}, CTK{048})
+P2-07 [ACCEPTED] CTK{geo.netsupportsoftware.com|/location/loca.asp}
+P2-08 [ACCEPTED] CTK{79.141.165.202|/a9b024dccb2b4f24.php}
+P2-09 [UNRESOLVED] left blank
+P2-10 [ACCEPTED] CTK{2025-10-03 10:02:45 UTC}

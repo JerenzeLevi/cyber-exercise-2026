@@ -1,0 +1,12 @@
+What we were looking for:
+- Which two computers talked to each other using file-sharing (SMB), and on what door number.
+
+What we found:
+- The infected computer 192.168.200.95 talked to the boss computer 192.168.200.4, on door 445.
+
+How we found it:
+- We looked at file-sharing traffic (a way computers share files and folders) and filtered it to just door number 445.
+- We saw the infected computer and the boss computer talking directly - a sign that the infection was spreading (like sneaking from room to room after breaking in the front door).
+
+Answer:
+CTK{192.168.200.95|192.168.200.4|445}

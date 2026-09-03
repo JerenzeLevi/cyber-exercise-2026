@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 5: Client Infection and Domain Controller Compromise
+
+What filename and MIME type were recorded for the document response?
+
+Submit exactly in this format: CTK{FILENAME|MIME_TYPE} Use exact capitalization.

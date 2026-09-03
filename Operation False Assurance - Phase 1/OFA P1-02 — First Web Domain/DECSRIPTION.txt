@@ -1,0 +1,8 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+What was the first web domain queried by the workstation, and what IPv4 address was returned?
+
+Submit exactly in this format: CTK{DOMAIN|IP} Use exact capitalization.
+
+View Hint
+Use DNS metadata and sort by time ascending.

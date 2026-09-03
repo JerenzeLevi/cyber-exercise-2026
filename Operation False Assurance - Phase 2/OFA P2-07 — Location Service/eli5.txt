@@ -1,0 +1,13 @@
+What we were looking for:
+- What website name and web address the sick computer used to check its own location (like a GPS check).
+
+What we found:
+- The website was geo.netsupportsoftware.com, and the address it asked was /location/loca.asp.
+
+How we found it:
+- We saw the sick computer look up this website name right around the same time it was setting up its remote-control check-ins.
+- Right after, it sent a request to that website's location-checking page and got a small, normal "OK" answer back.
+- This is actually a normal, harmless feature of the remote-control software checking where the computer is, not the bad guys' own server.
+
+Answer:
+CTK{geo.netsupportsoftware.com|/location/loca.asp}

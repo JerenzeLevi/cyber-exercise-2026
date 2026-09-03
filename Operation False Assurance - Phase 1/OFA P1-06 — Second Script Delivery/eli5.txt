@@ -1,0 +1,15 @@
+What we were looking for:
+- What web address delivered the second bad script.
+- What name that script was saved as.
+
+What we found:
+- The address was /test112.
+- The saved file was named test.ps1.
+
+How we found it:
+- We kept looking through the same list of web requests, right after the first script.
+- The very next request went to "/test112" and got back a file named test.ps1.
+- This time the request came from the first script actually running (not just a download tool), which fits the story of one script fetching another.
+
+Answer:
+CTK{/test112|test.ps1}

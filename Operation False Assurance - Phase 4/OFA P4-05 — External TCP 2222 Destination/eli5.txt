@@ -1,0 +1,13 @@
+What we were looking for:
+- Which outside address the sick computer kept talking to using a weird, non-normal door number (2222).
+
+What we found:
+- The address was 86.159.48.25.
+
+How we found it:
+- We searched for all traffic using that unusual door number, 2222.
+- We found 124 separate connections, all going to the exact same outside address.
+- The alarm log flagged this as a known bad-guy "Dridex" virus, checking in every 3 minutes like clockwork.
+
+Answer:
+CTK{86.159.48.25}

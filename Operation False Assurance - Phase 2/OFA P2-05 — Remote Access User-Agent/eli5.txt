@@ -1,0 +1,13 @@
+What we were looking for:
+- What "name tag" (called a User-Agent, it tells a website what program is talking to it) the remote-control software used.
+
+What we found:
+- The name tag was NetSupport Manager/1.3.
+
+How we found it:
+- We looked at a special log that automatically reads name tags from web traffic.
+- It labeled the traffic from the sick computer as "NetSupport Manager" right at the same moment as its first check-in to the remote-control server.
+- That matched the exact name tag text seen in the raw web traffic.
+
+Answer:
+CTK{NetSupport Manager/1.3}

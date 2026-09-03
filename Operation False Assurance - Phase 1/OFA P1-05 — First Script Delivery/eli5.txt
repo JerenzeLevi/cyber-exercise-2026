@@ -1,0 +1,15 @@
+What we were looking for:
+- What web address (URI, the part after the computer name) delivered the first bad script.
+- What name that script was saved as.
+
+What we found:
+- The address was /19.
+- The saved file was named scriptv2.ps1.
+
+How we found it:
+- We listed every web request the sick computer made to the bad server, oldest first.
+- The very first request asked for "/19" and got back a file named scriptv2.ps1.
+- A later request asked for something else and got a different file, so we knew "/19" was the first one.
+
+Answer:
+CTK{/19|scriptv2.ps1}

@@ -1,0 +1,13 @@
+What we were looking for:
+- The name, type label, and size of a bad program file (an executable, a file you can run on your computer) that was downloaded.
+
+What we found:
+- Not solved yet. We're pretty sure the file was named Renewable.exe and was 10,647,040 bytes big, but the type-label word was never accepted.
+
+How we found it:
+- We found the file record showing its name and size.
+- We tried two different type-label guesses for what kind of file it is, but both were rejected.
+- We think we just need to try a more generic type-label word next time.
+
+Answer:
+Not solved yet - filename and size look right, type-label word is unconfirmed.

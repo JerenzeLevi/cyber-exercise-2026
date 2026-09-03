@@ -1,0 +1,12 @@
+What we were looking for:
+- The address and name of the "boss" computer (a Domain Controller — the computer that handles logins for everyone in the office).
+
+What we found:
+- The boss computer's address was 10.11.28.2, and its name was WIN-FGG5B8C1BYF.
+
+How we found it:
+- We watched the login-handshake between the sick computer and 10.11.28.2, which revealed the boss computer's name.
+- We also checked that 10.11.28.2 was doing all the jobs a boss computer usually does (handling logins, the phone book, and file sharing) — proving it really is the boss.
+
+Answer:
+CTK{10.11.28.2|WIN-FGG5B8C1BYF}

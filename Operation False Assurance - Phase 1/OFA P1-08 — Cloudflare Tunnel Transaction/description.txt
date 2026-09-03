@@ -1,0 +1,5 @@
+Operation False Assurance — Phase 1: Fraudulent Verification and Script Delivery
+
+Identify the Cloudflare Tunnel hostname, POST URI, and response status code.
+
+Submit exactly in this format: CTK{HOSTNAME|URI|STATUS} Use exact capitalization.
