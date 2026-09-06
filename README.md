@@ -163,6 +163,20 @@ Official pubmats announcing Team BYEBUST's national-level championship at RESCOM
 
 </td>
 </tr>
+<tr>
+<td align="center" width="50%">
+
+**🛡️ 9th Regional Community Defense Group**
+
+<a href="https://www.facebook.com/share/1HSK841sh3/">
+<img src="./pubmat/9th%20Regional%20Defense%20Group.jpg" width="380" alt="9th Regional Community Defense Group pubmat"/>
+</a>
+
+🔗 [View original post](https://www.facebook.com/share/1HSK841sh3/)
+
+</td>
+<td align="center" width="50%"></td>
+</tr>
 </table>
 
 </div>
